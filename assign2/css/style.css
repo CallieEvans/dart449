@@ -7,3 +7,9 @@ html{
      font-size: calc(13px + 0.390625vw);
      scroll-behavior: smooth;
 }
+main{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
