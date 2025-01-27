@@ -1,0 +1,140 @@
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+html{
+     font-size: calc(13px + 0.390625vw);
+     scroll-behavior: smooth;
+}
+body{
+    background-color: black;
+    font-family: "cofo-sans-variable", sans-serif;;
+}
+header{
+    background-color:white;
+}
+.fake-nav{
+    display: flex;
+    justify-content: space-between;
+    background-color: red;
+    padding: 1em 30px;
+}
+.menu{
+    padding: 1em 30px .5rem 30px;
+}
+.menu li{
+    list-style-type: none;
+    margin-bottom: .5rem;
+}
+.menu li a{
+    text-decoration: none;
+}
+.menu li a:hover{
+    color:red !important;
+}
+.menu li a:before{
+    content:"> ";
+    opacity: 0;
+
+}
+.menu li a:hover:before{
+    content:"> ";
+    opacity: 1;
+}
+header a, header p{
+    color:black;
+    margin-bottom: 0;
+}
+
+h1, h2, h3, h4, h5, h6, p, a{
+    color: white;
+}
+h1{
+    text-transform: uppercase;
+    font-weight: 400; 
+    font-size: 2rem; 
+}
+h2{
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 3rem; 
+    margin-bottom: .5rem;
+}
+h2 em{
+    display: block;
+    font-size: 2rem;
+    margin: 1rem 0 2rem 0
+}
+p{
+    margin-bottom: 1em;
+    font-weight: 200;
+}
+img{
+    width:100%;
+    max-width:100%;
+}
+section{
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 2em 0
+}
+section.white-bg{
+    background-color:white;
+}
+
+section.white-bg p, section.white-bg h2{
+    color:black;
+}
+#idea3{
+    border-top: 2px solid black;
+}
+
+#idea5, #idea1{
+    border-top: 2px solid white;
+}
+#idea4 figure, #idea2 figure{
+    order:2; 
+}
+section article{
+     max-width:1400px;
+    padding: 0 30px;
+    margin:0 auto;
+}
+.hero{
+    min-height:80vh;
+     margin:0 auto;
+     justify-content: center;
+     text-align: center;
+}
+article{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap:25px;
+}
+.container, figure{
+    flex: 1;
+}
+.copyright{
+    font-size: .8rem;
+    font-style: italic;
+}
+
+@media only screen and (min-width: 800px) {
+    article{
+    flex-direction: row;
+}
+.hero{
+    min-height:70vh;
+}
+.container{
+    width:50%;
+    text-wrap: wrap;
+}
+h2{
+    font-size: 4rem; 
+}
+}
