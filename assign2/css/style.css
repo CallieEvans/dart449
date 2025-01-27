@@ -13,3 +13,16 @@ main{
     align-items: center;
     justify-content: center;
 }
+
+.change{
+    transition: .2s ease;
+    width:300px;
+    transform: rotate(120deg);
+    border-radius: 50%;
+}
+.change-night{
+    transition: .2s ease;
+    width:300px;
+    transform: rotate(-120deg);
+    border-radius: 50%;
+}
