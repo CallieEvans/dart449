@@ -1,0 +1,89 @@
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+html{
+     font-size: calc(13px + 0.390625vw);
+     scroll-behavior: smooth;
+}
+body{
+     background-color: rgb(231, 231, 231);
+}
+
+.hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    background-image: url('/img/galazy.jpg');
+}
+.hero a{
+    background-color: white;
+    display: inline-block;
+    padding: 10px 30px;
+    color:rgb(68, 147, 124);
+    text-decoration:none;
+
+    font-family: cofo-sans-variable, sans-serif;
+}
+.hero a:hover{
+    background-color: rgb(228, 150, 41);
+    color:white;
+}
+h1{
+    color: white;
+    font-size: 2.5rem;
+    font-family: cofo-sans-variable, sans-serif;
+    font-weight: 500;
+line-height: 100%;
+margin-bottom:1rem;
+
+}
+.hero p{
+    color:white;
+    font-family: cofo-sans-variable, sans-serif;
+    opacity: 0;
+}
+.change{
+opacity: .2;
+}
+
+.hero .appeared{
+    opacity: 1;
+}
+h2{
+    color:rgb(41, 41, 41);
+    font-size: 2rem;
+    font-family: cofo-sans-variable, sans-serif;
+    font-weight: 500;
+    line-height: 80%;
+    margin-bottom:1rem;
+    
+}
+ h3{
+    color:rgb(41, 41, 41);
+    font-size: 1rem;
+    font-family: cofo-sans-variable, sans-serif;
+    font-weight: 500;
+    line-height: 80%;
+    margin-bottom:1.5rem;
+    
+}
+p{
+   color:rgb(41, 41, 41);
+    font-family: cofo-sans-variable, sans-serif;
+    margin-bottom: 1em;
+}
+.copyright{
+    font-size: .8rem;
+    font-style: italic;
+}
+.hidden-sect{
+    display: none;
+    padding: 6em 30px;
+    max-width: 1080px;
+    margin:0 auto;
+    min-height: 100vh;
+}
