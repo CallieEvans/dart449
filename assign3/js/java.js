@@ -38,7 +38,7 @@ function checkQuiz() {
 
         //Change colours
         document.documentElement.style.setProperty("--light", "var(--dark)");
-        bgImg.style.backgroundImage = "url(/img/cwts.webp)"
+        bgImg.style.backgroundImage = "url(../img/cwts.webp)"
 
         // Move to next question
         nextBtn.style.display = 'block';
@@ -55,7 +55,7 @@ function checkQuiz() {
         questionPrompt.textContent = `Score: ${points}`;
         //Change the colours
         document.documentElement.style.setProperty("--light", "var(--finish)");
-        bgImg.style.backgroundImage = "url(/img/alexandru-acea-RQgKM1h2agA-unsplash.jpg)";
+        bgImg.style.backgroundImage = "url(../img/alexandru-acea-RQgKM1h2agA-unsplash.jpg)";
         bgImg.style.backgroundPosition = "center";
 
 
