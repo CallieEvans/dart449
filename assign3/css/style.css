@@ -9,16 +9,17 @@
   --dark:#144E59;
   --finish: red;
 }
-
+html{
+  font-size: calc(13px + 0.390625vw);
+}
 body{ 
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   background-color: var(--light);
   color: white;
-
    
 }
 h1{
-  font-size: 80px;
+  font-size: 5rem;
   text-transform: uppercase;
   line-height: 80%;
 }
@@ -40,6 +41,7 @@ a{
   text-decoration: none;
   display: block;
     color: white;
+    margin-top: 2em;
 
 }
 a::after{
@@ -151,4 +153,13 @@ padding:20px;
 .btn-next{
   display: none;
   margin-top: 2em;
+}
+ @media only screen and (max-width: 600px) {
+.row.third{
+  max-width: 100%;
+}
+.col-2{
+  display: block;
+}
+  
 }
