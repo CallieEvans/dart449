@@ -161,5 +161,8 @@ padding:20px;
 .col-2{
   display: block;
 }
+full.bg{
+  min-height: 50vh;
+}
   
 }
