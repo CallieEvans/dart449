@@ -101,3 +101,5 @@ img.forEach(item => {
         previews.classList.remove('opacity');
     });
 });
+
+
