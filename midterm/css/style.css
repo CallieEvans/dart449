@@ -9,11 +9,11 @@
 }
 @font-face {
   font-family: 'chicago';
-  src: url(fonts/sysfont.woff);
+  src: url(../fonts/sysfont.woff);
 }
 @font-face {
   font-family: 'ChicagoFLF';
-  src: url(fonts/ChicagoFLF.ttf);
+  src: url(../fonts/ChicagoFLF.ttf);
 }
 html{
   font-size: calc(12px + 0.390625vw);
@@ -80,7 +80,7 @@ header ul li a:hover{
   color: white;
 }
 main{
-  background-image: url('img/gradient-bg.png');
+  background-image: url('../img/gradient-bg.png');
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
