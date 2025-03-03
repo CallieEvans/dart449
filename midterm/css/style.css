@@ -16,7 +16,7 @@
   src: url(../fonts/ChicagoFLF.ttf);
 }
 html{
-  font-size: calc(12px + 0.390625vw);
+  font-size: calc(9px + 0.390625vw);
 }
 body{ 
   font-family: 'ChicagoFLF';
@@ -33,20 +33,21 @@ h1, h2, h3, h4{
   font-family: 'ChicagoFLF';
 }
 h2{
-  font-size: 60px;
+  font-size: 4cm;
       font-family: 'chicago';
 }
 h1{
-  font-size: 5rem;
+  font-size: 3.5rem;
   text-transform: uppercase;
   line-height: 80%;
     font-family: 'chicago';
 }
 h3{
-  font-size: 35px;
+  font-size: 25px;
 }
 p{
 margin: .5em 0 1em 0;
+line-height: 140%;
   
 }
 img{
