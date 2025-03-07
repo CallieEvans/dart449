@@ -26,6 +26,9 @@
        <input type="text" id="user-pass" name="password" placeholder="password">
        <button class="submit">submit</button>
             
+        <h3>List of existing users</h3>
+        <div><ul class="user-list"></ul></div>
+       <button class="login">Login</button>
    <div class="video-display" style="margin-top: 2em;">         
          <video id="video" autoplay playsinline></video>
         <canvas id="canvas" style="display:none;"></canvas>
@@ -41,7 +44,8 @@
     <footer>
         <p>© Copyright - tor-ent</p>
     </footer>
+    <script type="module" src="js/database.js"></script>
     <script src="js/java.js"></script>
-       <script src="js/video.js"></script>
+    <script src="js/video.js"></script>
 </body>
 </html>
