@@ -137,10 +137,10 @@ window.onload = function () {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         // Convert to image and display
-        photo.src = canvas.toDataURL('image/png');
+        photo.src = canvas.toDataURL('users/png');
         //get canvas display to save image to firestorage
         let blob = canvas.toBlob((blob) => {
-            const storageRef = ref(storage, `images/${user}.png`);
+            const storageRef = ref(storage, `users/${user}.png`);
             // 'file' comes from the Blob or File API
             uploadBytes(storageRef, blob).then((snapshot) => {
                 console.log('Uploaded a blob or file!');
