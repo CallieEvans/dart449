@@ -49,6 +49,7 @@ window.onload = function () {
     const btn = document.querySelector('.submit');
 
     //login vars
+    let userSignedIn = undefined;
 
 
 
@@ -77,6 +78,9 @@ window.onload = function () {
             console.error("Error adding document: ", e);
         }
     }
+    /**
+     * Retreive users when create button is clicked
+     */
     async function getUser(user) {
         try {
             //get a document to our collection of users
@@ -114,7 +118,7 @@ window.onload = function () {
 
 
     /**
-     * Photo
+     * Start the webcam and streama video , came partly from Chatgpt
      */
     async function startWebcam(user, pass) {
         //Check and log errors? (try and catch)
@@ -129,7 +133,9 @@ window.onload = function () {
             console.error("Error accessing webcam:", error);
         }
     }
-
+    /**
+     * take photo of user and upload the the database
+     */
     function takePhoto(user, pass) {
         const context = canvas.getContext('2d');
         canvas.width = video.videoWidth;
@@ -150,26 +156,93 @@ window.onload = function () {
 
         });
         photo.style.display = 'block';
-
-
     }
+    /**
+     * Display the list of created users
+    //  */
+    // async function displayUsers() {
+    //     const usersRef = collection(db, "Users"); // Reference to the "Users" collection
+    //     const userLoginList = await getDocs(usersRef); // Fetch all documents
 
-    async function displayUsers() {
+    //     // const userList = document.querySelector('.user-list'); // Get the container
+    //     // userList.innerHTML = ''; // Clear previous users
+    //     // // const loginBtn = document.querySelector('.login');
+
+    //     // //Used ChatGPT for the adding in html elements
+    //     // userLoginList.forEach((doc) => {
+    //     //     const userData = doc.data();
+    //     //     const userDiv = document.createElement('li');
+    //     //     userDiv.classList.add('user-item'); // Add a class for styling
+    //     //     userDiv.innerHTML = `<p class="${userData.user}">${userData.user}</p>   <input type="text" class="user-sign-in" name="password" placeholder="Enter password"> `;
+    //     //     userList.appendChild(userDiv);
+    //     // });
+    // }
+
+    // displayUsers();
+
+    /**
+    * Update the user name & password
+    */
+
+    async function triggerPass() {
         const usersRef = collection(db, "Users"); // Reference to the "Users" collection
         const userLoginList = await getDocs(usersRef); // Fetch all documents
 
         const userList = document.querySelector('.user-list'); // Get the container
         userList.innerHTML = ''; // Clear previous users
-        // const loginBtn = document.querySelector('.login');
 
+        //ChatGPT
+        // Loop through each user in the database
         userLoginList.forEach((doc) => {
+            const loginBtn = document.querySelector('.login');
             const userData = doc.data();
+
+            // Create the HTML elements dynamically
             const userDiv = document.createElement('li');
             userDiv.classList.add('user-item'); // Add a class for styling
-            userDiv.innerHTML = `<p>${userData.user}</p> `;
+
+            // Create user name (p element)
+            const userName = document.createElement('p');
+            userName.textContent = userData.user;
+            userName.classList.add(userData.user); // Add dynamic class for user
+
+            // Create password input (initially hidden)
+            const passInput = document.createElement('input');
+            passInput.type = 'text';
+            passInput.classList.add(userData.user, 'user-sign-in');
+            passInput.placeholder = 'Enter password';
+            passInput.style.display = 'none'; // Hide by default
+
+            // Append user name and password input to the user container
+            userDiv.appendChild(userName);
+            userDiv.appendChild(passInput);
             userList.appendChild(userDiv);
+
+            const currentInput = userDiv.querySelector('.user-sign-in');
+            // Add event listener to the user name
+            userName.addEventListener('click', function () {
+                // Toggle password input visibility when the user name is clicked
+
+                currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
+
+                loginBtn.addEventListener('click', function () {
+                    if (currentInput.value === `${userData.pass}`) {
+                        userSignedIn = userData.user;
+                        console.log(`${userData.user} signed in`);
+                    } else {
+                        console.log('incorrect password');
+                    }
+
+                });
+            });
         });
     }
-    displayUsers();
+
+    triggerPass(); // Call the function to initialize the functionality
+
+
+
 
 };
+
+

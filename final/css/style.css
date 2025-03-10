@@ -115,6 +115,15 @@ img{
 #video{
   display: none;
 }
+/* Sign in styles */
+.user-item{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+
 footer{
     position: fixed;
 
