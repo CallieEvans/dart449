@@ -2,12 +2,10 @@
 
 // Import the functions you need from the SDKs you need
 // https://firebase.google.com/docs/firestore/quickstart
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { collection, doc, setDoc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
-
-
 // TODO: Add SDKs for Firebase products that you want to use
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,6 +34,8 @@ window.onload = function () {
     // Initialize Firebase & firebase storage
     const app = initializeApp(firebaseConfig);
     const storage = getStorage(app);
+    const db = getFirestore(app, '(default)');
+
 
     //code generated from AI, references from this tutorial: https://shamsfiroz.medium.com/capturing-photos-with-javascriptusing-accessing-the-camera-8aefb5e6fa5f
     const video = document.getElementById('video');
@@ -52,9 +52,8 @@ window.onload = function () {
     let userSignedIn = undefined;
 
 
-
     //Connect to Database - Firebase
-    const db = getFirestore(app, '(default)');
+
 
     //Await has to be combine with async, to issue the js knows to wait
     async function addUser(user, pass) {
@@ -241,7 +240,22 @@ window.onload = function () {
     triggerPass(); // Call the function to initialize the functionality
 
 
-
+    // async function addForumPost(forum) {
+    //     //Try = try to call the collection, Await tells to wait until the docs are found
+    //     try {
+    //         const usersRef = collection(db, 'Forum');
+    //         const docRef = doc(usersRef, forum);
+    //         await setDoc(docRef, {
+    //             forum: forum
+    //         });
+    //         console.log("Document written with ID: ", docRef.id);
+    //         // Catch = to log the error  or 'catch' it so it doesnt break code
+    //     } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //     }
+    // }
+    // const btnForum = document.querySelector('.forum-sub');
+    // btnForum.addEventListener('click', addForumPost());
 
 };
 

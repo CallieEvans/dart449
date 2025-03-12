@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midterm – Tor-ent</title>
+   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="https://use.typekit.net/nis4sej.css">
+</head>
+<body>
+    <header>
+        <ul>
+            <li class="logo">tor-ent</li>
+            <li><a href="index.html">File</a></li>
+            <li><a href="inspo.html">Edit</a></li>
+            <li><a href="ui.html" >Help</a></li>
+            
+        </ul>
+            <a id="time-date">time</a>
+        
+    </header>
+    <main>
+        <section class="width">
+        <h3>Please create user</h3>
+       <input type="text" id="user-input" name="username" placeholder="username">
+       <input type="text" id="user-pass" name="password" placeholder="password">
+       <button class="submit">submit</button>
+            
+        <h3>List of existing users</h3>
+        <div><ul class="user-list"></ul></div>
+       <button class="login">Login</button>
+   <div class="video-display" style="margin-top: 2em;">         
+         <video id="video" autoplay playsinline></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <h4 class="username-display">No user currently logged in</h4>
+        <p class="userpass">User Password</p>
+        <img id="photo" alt="">
+    </div>
+    
+
+    </section>
+    </main>
+    
+    <footer>
+        <p>© Copyright - tor-ent</p>
+    </footer>
+    <script type="module" src="js/database.js"></script>
+    <script src="js/java.js"></script>
+    <script src="js/video.js"></script>
+</body>
+</html>

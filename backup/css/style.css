@@ -1,0 +1,158 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+:root{
+  --dark:#144E59;
+}
+@font-face {
+  font-family: 'chicago';
+  src: url(../fonts/sysfont.woff);
+}
+@font-face {
+  font-family: 'ChicagoFLF';
+  src: url(../fonts/ChicagoFLF.ttf);
+}
+html{
+  font-size: calc(9px + 0.390625vw);
+}
+body{ 
+  font-family: 'ChicagoFLF';
+    color: white;
+}
+a{
+  color: black;
+}
+main a{
+  color:white;
+}
+h1, h2, h3, h4{
+  font-family: "gridlite-pe-variable", sans-serif;
+  font-family: 'ChicagoFLF';
+}
+h2{
+  font-size: 4cm;
+      font-family: 'chicago';
+}
+h1{
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  line-height: 80%;
+    font-family: 'chicago';
+}
+h3{
+  font-size: 25px;
+}
+p{
+margin: .5em 0 1em 0;
+line-height: 140%;
+  
+}
+img{
+  max-width: 100%;
+}
+.screenshots{
+  margin-top: 2em;
+}
+header{
+  position: fixed;
+  width: 100%;
+  top:0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:.3em 30px;
+  font-size: 14px;
+  background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+    font-family: 'chicago';
+    border-bottom: 2px solid black;
+}
+.logo{
+  margin-right: 2em;
+}
+header ul{
+  display: flex;
+}
+header ul li{
+  list-style-type:none;
+}
+ 
+header ul li a{
+  padding: .3em 2em;
+  text-decoration: none;
+}
+header ul li a:hover{
+  background-color: black;
+  color: white;
+}
+main{
+  background-image: url('../img/gradient-bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+}
+.width{
+  max-width: 1200px;
+  margin:0 auto;
+  padding: 150px 30px;
+}
+.mobile-img{
+  display: flex;
+  flex: 1 auto;
+}
+.mobile-img img{
+  max-width: 50%;
+}
+img{
+  margin: .5em;
+}
+
+#video{
+  display: none;
+}
+/* Sign in styles */
+.user-item{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+
+footer{
+    position: fixed;
+
+ bottom:0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 14px;
+  background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+    font-family: 'chicago';
+    border-bottom: 2px solid black;
+}
+.footnotes{
+  margin-top: 2em;
+}
+.footnotes p{
+  font-size: 12px;
+}
+footer p{
+   background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 2px solid black;
+outline: 1px solid black;
+margin: 0;
+}
