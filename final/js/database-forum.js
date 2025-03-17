@@ -39,7 +39,7 @@ window.onload = function () {
     //code generated from AI, references from this tutorial: https://shamsfiroz.medium.com/capturing-photos-with-javascriptusing-accessing-the-camera-8aefb5e6fa5f
     const forumNameDisplay = document.querySelector('.username-display');
     let currentforum = document.querySelector('#topic');
-    const btn = document.querySelector('.forum-sub');
+    const btnForum = document.querySelector('.forum-sub');
 
     //login vars
     let userSignedIn = 'uSER234354';
@@ -98,13 +98,13 @@ window.onload = function () {
         getforum(forum);
     }
 
-    btn.addEventListener('click', updateforum);
+    btnForum.addEventListener('click', updateforum);
 
     /**
     * Update the forum entry
     */
 
-    async function triggerPass() {
+    async function triggerForum() {
         const forumsRef = collection(db, "Forums"); // Reference to the "forums" collection
         const forumLoginList = await getDocs(forumsRef); // Fetch all documents
 
@@ -136,7 +136,7 @@ window.onload = function () {
         });
     }
 
-    triggerPass(); // Call the function to initialize the functionality
+    triggerForum(); // Call the function to initialize the functionality
 
 
 

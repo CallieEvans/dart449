@@ -47,22 +47,14 @@ window.onload = function () {
     let currentUser = document.querySelector('#user-input');
     let currentPass = document.querySelector('#user-pass');
     const btn = document.querySelector('.submit');
-    const forumNameDisplay = document.querySelector('.username-display');
-    let currentforum = document.querySelector('#topic');
-    const btnForum = document.querySelector('.forum-sub');
-
-    const loginBtn = document.querySelector('.login');
-
 
     //login vars
-    let userSignedIn;
+    let userSignedIn = undefined;
 
 
     //Connect to Database - Firebase
 
-    /**
-     * Add user function
-     */
+
     //Await has to be combine with async, to issue the js knows to wait
     async function addUser(user, pass) {
         //Try = try to call the collection, Await tells to wait until the docs are found
@@ -85,7 +77,6 @@ window.onload = function () {
             console.error("Error adding document: ", e);
         }
     }
-
     /**
      * Retreive users when create button is clicked
      */
@@ -107,9 +98,11 @@ window.onload = function () {
             console.error("Error getting document: ", e);
         }
     }
+
+
     /**
- * Update the user name & password
- */
+     * Update the user name & password
+     */
     function updateUser() {
         let user = currentUser.value;
         let pass = currentPass.value;
@@ -122,9 +115,10 @@ window.onload = function () {
 
     btn.addEventListener('click', updateUser);
 
+
     /**
- * Start the webcam and streama video , came partly from Chatgpt
- */
+     * Start the webcam and streama video , came partly from Chatgpt
+     */
     async function startWebcam(user, pass) {
         //Check and log errors? (try and catch)
         try {
@@ -138,10 +132,9 @@ window.onload = function () {
             console.error("Error accessing webcam:", error);
         }
     }
-
     /**
- * take photo of user and upload the the database
- */
+     * take photo of user and upload the the database
+     */
     function takePhoto(user, pass) {
         const context = canvas.getContext('2d');
         canvas.width = video.videoWidth;
@@ -157,79 +150,40 @@ window.onload = function () {
             uploadBytes(storageRef, blob).then((snapshot) => {
                 console.log('Uploaded a blob or file!');
                 addUser(user, pass);
+                getUser(user);
             });
 
         });
         photo.style.display = 'block';
     }
-
     /**
-      * Retreive forums when create button is clicked
-      */
-    async function getforum(forum) {
-        try {
-            //get a document to our collection of forums
-            const docRef = doc(db, "Forums", forum);
-            const docSnap = await getDoc(docRef);
+     * Display the list of created users
+    //  */
+    // async function displayUsers() {
+    //     const usersRef = collection(db, "Users"); // Reference to the "Users" collection
+    //     const userLoginList = await getDocs(usersRef); // Fetch all documents
 
-            if (docSnap.exists()) {
-                console.log("Document data:", docSnap.data());
-            } else {
-                // docSnap.data() will be undefined in this case
-                console.log("No such document!");
-            }
-            console.log("Document retrieved with ID: ", docRef.id);
-            // Catch = to log the error  or 'catch' it so it doesnt break code
-        } catch (e) {
-            console.error("Error getting document: ", e);
-        }
-    }
+    //     // const userList = document.querySelector('.user-list'); // Get the container
+    //     // userList.innerHTML = ''; // Clear previous users
+    //     // // const loginBtn = document.querySelector('.login');
 
-    /**
- * Add forum post
- */
-    async function addforum(forum) {
-        //This was AI, I couldn't figure it out
-        if (!userSignedIn) {
-            console.error("No user signed in.");
-            return;
-        }
-        try {
-            const forumsRef = collection(db, 'Forums');
-            const docRef = doc(forumsRef, forum);
+    //     // //Used ChatGPT for the adding in html elements
+    //     // userLoginList.forEach((doc) => {
+    //     //     const userData = doc.data();
+    //     //     const userDiv = document.createElement('li');
+    //     //     userDiv.classList.add('user-item'); // Add a class for styling
+    //     //     userDiv.innerHTML = `<p class="${userData.user}">${userData.user}</p>   <input type="text" class="user-sign-in" name="password" placeholder="Enter password"> `;
+    //     //     userList.appendChild(userDiv);
+    //     // });
+    // }
 
-            // Add forum with user reference
-            await setDoc(docRef, {
-                forum: forum,
-                currentUser: userSignedIn // Associate with signed-in user
-            });
-
-            console.log("Forum written with ID: ", docRef.id);
-        } catch (e) {
-            console.error("Error adding forum: ", e);
-        }
-    }
-
-    /**
-   * Update the forum name & password
-   */
-    function updateforum() {
-        let forum = currentforum.value;
-        forumNameDisplay.textContent = forum;
-
-        //Calling from database.js
-        addforum(forum);
-        getforum(forum);
-
-    }
-
-    btnForum.addEventListener('click', updateforum);
+    // displayUsers();
 
     /**
     * Update the user name & password
     */
 
-    async function triggerUser() {
+    async function triggerPass() {
         const usersRef = collection(db, "Users"); // Reference to the "Users" collection
         const userLoginList = await getDocs(usersRef); // Fetch all documents
 
@@ -239,6 +193,7 @@ window.onload = function () {
         //ChatGPT
         // Loop through each user in the database
         userLoginList.forEach((doc) => {
+            const loginBtn = document.querySelector('.login');
             const userData = doc.data();
 
             // Create the HTML elements dynamically
@@ -265,74 +220,42 @@ window.onload = function () {
             const currentInput = userDiv.querySelector('.user-sign-in');
             // Add event listener to the user name
             userName.addEventListener('click', function () {
+                // Toggle password input visibility when the user name is clicked
+
                 currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
 
-                // Directly update userSignedIn here
-                userSignedIn = userData.user;  // This should correctly assign the signed-in user to the global variable
-                console.log(`${userSignedIn} signed in`);
-
-
-                // Trigger any further actions (like showing password input, etc.)
                 loginBtn.addEventListener('click', function () {
-                    // if (currentInput.value === userData.pass) {
-                    //     userSignedIn = userData.user;  // Update again if necessary
-                    //     console.log(`${userData.user} signed in successfully`);
-                    // } else {
-                    //     console.log('Incorrect password');
-                    // }
-                    getUser(userSignedIn);
-                    triggerForum();
+                    if (currentInput.value === `${userData.pass}`) {
+                        userSignedIn = userData.user;
+                        console.log(`${userData.user} signed in`);
+                    } else {
+                        console.log('incorrect password');
+                    }
 
                 });
             });
         });
     }
 
-    triggerUser(); // Call the function to initialize the functionality
-
-    /**
-    * Update the forum entry
-    */
-
-    async function triggerForum() {
-        const forumsRef = collection(db, "Forums"); // Reference to the "forums" collection
-        const forumLoginList = await getDocs(forumsRef); // Fetch all documents
+    triggerPass(); // Call the function to initialize the functionality
 
 
-        const forumList = document.querySelector('.forum-list'); // Get the container
-        forumList.innerHTML = ''; // Clear previous forums
-
-        // Loop through each forum in the database
-        forumLoginList.forEach((doc) => {
-            const forumData = doc.data();
-
-            // Create container for forum post
-            const forumDiv = document.createElement('li');
-            forumDiv.classList.add('forum-item');
-
-            const welcomeUser = document.querySelector('.welcome-user');
-            welcomeUser.textContent = `${userSignedIn} signed in`;
-
-            // Forum text
-            const forumName = document.createElement('p');
-            forumName.textContent = forumData.forum;
-            forumName.classList.add('forum-post');
-
-            // Display the user who created the forum post
-            const currentUser = document.createElement('p');
-            currentUser.textContent = `Forum by ${forumData.currentUser || 'Unknown'}`;
-            currentUser.classList.add('forum-creator');
-
-            // Append to forum container
-            forumDiv.appendChild(forumName);
-            forumDiv.appendChild(currentUser);
-            forumList.appendChild(forumDiv);
-        });
-    }
-
-
-
-    console.log(userSignedIn);
+    // async function addForumPost(forum) {
+    //     //Try = try to call the collection, Await tells to wait until the docs are found
+    //     try {
+    //         const usersRef = collection(db, 'Forum');
+    //         const docRef = doc(usersRef, forum);
+    //         await setDoc(docRef, {
+    //             forum: forum
+    //         });
+    //         console.log("Document written with ID: ", docRef.id);
+    //         // Catch = to log the error  or 'catch' it so it doesnt break code
+    //     } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //     }
+    // }
+    // const btnForum = document.querySelector('.forum-sub');
+    // btnForum.addEventListener('click', addForumPost());
 
 };
 

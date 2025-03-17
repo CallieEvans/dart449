@@ -91,10 +91,11 @@ header ul li a:hover{
   color: white;
 }
 main{
-  background-image: url('../img/gradient-bg.png');
+  background-image: url('../img/desktop-bg.png');
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
 .width{
   max-width: 1200px;
@@ -121,7 +122,30 @@ img{
   justify-content: space-between;
 }
 
-
+.login-pop-up{
+  width:100%;
+  min-height: 100vh;
+  background-color:rgba(248, 248,248, .85);
+  position: fixed;
+  top:30px;
+  left: 0;
+    display: flex;
+  align-items: center;
+}
+.login-pop-up .modal{
+  background-color:blue;
+  margin:0 auto;
+  max-width: 500px;
+  padding: 4em;
+    background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+}
 
 
 footer{
