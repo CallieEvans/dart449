@@ -21,17 +21,47 @@
     </header>
     <main>
         <section class="width">
+            <section class="desktop">
+                <img class="safari" src="/img/safari.svg">
+                <div class="Tor-pop-up">
+                    <div class="tor-modal">
+                        <div class="forum-post">
+                            <button class="safari-close">x</button>
+                            <div class="forum-title">
+                              <h3>Decrypted </h3>
+                               <h3>Forum</h3>
+                            </div>
+                            <div><p class="welcome-user"></p></div>
+                            <input type="text" id="topic" name="topic" placeholder="Forum topic">
+                            <button class="forum-sub">Submit</button>
+                            <div><ul class="forum-list"></ul></div>
+                        </div>
+                    </div>
+                </div>
+                <img src="/img/tor-pixel.svg">
+            </section>
             <div class="login-pop-up"> 
-                <div class="modal">           
-                    <h3>List of existing users</h3>
-                    <div><ul class="user-list"></ul></div>
-                    <button class="login">Login</button>
+                <div class="modal">
+                    <div class="users">        
+                        <h3>Welcome to Tor-ent</h3>
+                        <div><ul class="user-list"></ul></div>
+                        <button class="login">Login</button>
+                        <button class="account-popup">Create Account</button>
+                    </div>   
+                    <div class="create-acc">        
+                        <h3>Please create an account to continue</h3>
+                        <input type="text" id="user-input" name="username" placeholder="username">
+                        <input type="text" id="user-pass" name="password" placeholder="password">
+                        <button class="submit">Create</button>
+                        <button class="login-popup">Login</button>
+                    </div>   
+                    
                 </div> 
             </div>
-        <h3>Please create user</h3>
+        <!-- <h3>Please create user</h3>
        <input type="text" id="user-input" name="username" placeholder="username">
        <input type="text" id="user-pass" name="password" placeholder="password">
-       <button class="submit">submit</button>
+       <button class="submit">submit</button> -->
        
    <div class="video-display" style="margin-top: 2em;">         
          <video id="video" autoplay playsinline></video>
@@ -41,13 +71,6 @@
         <img id="photo" alt="">
     </div>
             
-            <div class="forum-post">
-             <input type="text" id="topic" name="topic" placeholder="Forum topic">
-            <button class="forum-sub">add</button>
-            <div><p class="welcome-user"></p></div>
-            <div><ul class="forum-list"></ul></div>
-            
-        </div>
     
 
     </section>

@@ -101,11 +101,27 @@ main{
   max-width: 1200px;
   margin:0 auto;
   padding: 150px 30px;
+  min-height: 100vh;
 }
 .mobile-img{
   display: flex;
   flex: 1 auto;
 }
+.safari{
+  position: absolute;
+  top:20%;
+  left:50vw;
+  display: block;
+}
+.safari::after{
+  content: ' ';
+  display: block;
+  border-radius: 50%;
+  background-color: black;
+  width: 50px;
+  height: 50px;
+}
+
 .mobile-img img{
   max-width: 50%;
 }
@@ -121,21 +137,56 @@ img{
   display: flex;
   justify-content: space-between;
 }
-
+.Tor-pop-up{
+  width:50%;
+  min-height: 100vh;
+  position: fixed;
+  top:0px;
+  left:4px;
+  align-items: center;
+  display: none;
+  
+}
+.Tor-pop-up .tor-modal{
+  margin:0 auto;
+  max-width: 800px;
+  width:100%;
+  padding: 4em;
+    background-color: #EFEFEF;
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+  min-height: 91vh;
+  color:#0400F1;
+}
 .login-pop-up{
   width:100%;
   min-height: 100vh;
-  background-color:rgba(248, 248,248, .85);
+ background: url('../img/desktop-bg.png'), rgba(248, 248, 248, 0.85);
+ background-size: cover;
+ background-repeat: no-repeat;
   position: fixed;
   top:30px;
-  left: 0;
+  left: 0px;
     display: flex;
   align-items: center;
+}
+.forum-title{
+  display: flex;
+  justify-content: space-between;
+}
+.forum-item{
+  display: flex;
+  justify-content: space-between;
 }
 .login-pop-up .modal{
   background-color:blue;
   margin:0 auto;
-  max-width: 500px;
+  max-width: 600px;
   padding: 4em;
     background-color: rgba(239, 239, 239, .8);
   color: black;
@@ -146,7 +197,14 @@ img{
   border-width: 5px;
   outline: 2px solid black;
 }
+.user-list{
+  max-height: 100px;
+  overflow-y:scroll;
+}
 
+.create-acc{
+  display: none;
+}
 
 footer{
     position: fixed;

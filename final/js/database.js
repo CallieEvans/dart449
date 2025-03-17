@@ -43,6 +43,7 @@ window.onload = function () {
     const photo = document.getElementById('photo');
 
     const userNameDisplay = document.querySelector('.username-display');
+
     const userPassDisplay = document.querySelector('.userpass');
     let currentUser = document.querySelector('#user-input');
     let currentPass = document.querySelector('#user-pass');
@@ -52,6 +53,43 @@ window.onload = function () {
     const btnForum = document.querySelector('.forum-sub');
 
     const loginBtn = document.querySelector('.login');
+
+    const popupLoginPop = document.querySelector('.users');
+    const popupCreAccPop = document.querySelector('.create-acc');
+    const popupCreAccTog = document.querySelector('.account-popup');
+    const popupLoginTog = document.querySelector('.login-popup');
+
+    const browserSafariTog = document.querySelector('.safari');
+    const browserSafari = document.querySelector('.Tor-pop-up');
+    const browserSafariClose = document.querySelector('.safari-close');
+
+    /**
+     * Modal Openings, browsers and logins
+     */
+    function openSafari() {
+        browserSafari.style.display = 'flex';
+    }
+    browserSafariTog.addEventListener('click', openSafari);
+
+    function closeSafari() {
+        browserSafari.style.display = 'none';
+    }
+    browserSafariClose.addEventListener('click', closeSafari);
+
+    function loginPopUp() {
+        popupCreAccPop.style.display = 'block';
+        popupLoginPop.style.display = 'none';
+    }
+
+    popupCreAccTog.addEventListener('click', loginPopUp);
+
+    function accPopUp() {
+        popupCreAccPop.style.display = 'none';
+        popupLoginPop.style.display = 'block';
+    }
+
+    popupLoginTog.addEventListener('click', accPopUp);
+
 
 
     //login vars
@@ -240,6 +278,7 @@ window.onload = function () {
         // Loop through each user in the database
         userLoginList.forEach((doc) => {
             const userData = doc.data();
+            const loginPopup = document.querySelector('.login-pop-up');
 
             // Create the HTML elements dynamically
             const userDiv = document.createElement('li');
@@ -248,12 +287,13 @@ window.onload = function () {
             // Create user name (p element)
             const userName = document.createElement('p');
             userName.textContent = userData.user;
-            userName.classList.add(userData.user); // Add dynamic class for user
+            //ai for the replace function
+            userName.classList.add(userData.user.trim().replace(/\s+/g, '-')); // Add dynamic class for user
 
             // Create password input (initially hidden)
             const passInput = document.createElement('input');
             passInput.type = 'text';
-            passInput.classList.add(userData.user, 'user-sign-in');
+            passInput.classList.add(userData.user.trim().replace(/\s+/g, '-'), 'user-sign-in');
             passInput.placeholder = 'Enter password';
             passInput.style.display = 'none'; // Hide by default
 
@@ -269,7 +309,7 @@ window.onload = function () {
 
                 // Directly update userSignedIn here
                 userSignedIn = userData.user;  // This should correctly assign the signed-in user to the global variable
-                console.log(`${userSignedIn} signed in`);
+                console.log(`Welcome ${userSignedIn}`);
 
 
                 // Trigger any further actions (like showing password input, etc.)
@@ -280,6 +320,7 @@ window.onload = function () {
                     // } else {
                     //     console.log('Incorrect password');
                     // }
+                    loginPopup.style.display = 'none';
                     getUser(userSignedIn);
                     triggerForum();
 
@@ -311,7 +352,7 @@ window.onload = function () {
             forumDiv.classList.add('forum-item');
 
             const welcomeUser = document.querySelector('.welcome-user');
-            welcomeUser.textContent = `${userSignedIn} signed in`;
+            welcomeUser.textContent = `Welcome ${userSignedIn}`;
 
             // Forum text
             const forumName = document.createElement('p');
@@ -320,12 +361,12 @@ window.onload = function () {
 
             // Display the user who created the forum post
             const currentUser = document.createElement('p');
-            currentUser.textContent = `Forum by ${forumData.currentUser || 'Unknown'}`;
+            currentUser.textContent = `// ${forumData.currentUser || 'Unknown'}`;
             currentUser.classList.add('forum-creator');
 
             // Append to forum container
-            forumDiv.appendChild(forumName);
             forumDiv.appendChild(currentUser);
+            forumDiv.appendChild(forumName);
             forumList.appendChild(forumDiv);
         });
     }
