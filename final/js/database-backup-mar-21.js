@@ -123,7 +123,27 @@ window.onload = function () {
         }
     }
 
+    /**
+     * Retreive users when create button is clicked
+     */
+    async function getUser(user) {
+        try {
+            //get a document to our collection of users
+            const docRef = doc(db, "Users", user);
+            const docSnap = await getDoc(docRef);
 
+            if (docSnap.exists()) {
+                console.log("Document data:", docSnap.data());
+            } else {
+                // docSnap.data() will be undefined in this case
+                console.log("No such document!");
+            }
+            console.log("Document retrieved with ID: ", docRef.id);
+            // Catch = to log the error  or 'catch' it so it doesnt break code
+        } catch (e) {
+            console.error("Error getting document: ", e);
+        }
+    }
     /**
  * Update the user name & password
  */
@@ -217,6 +237,27 @@ window.onload = function () {
                 }
             });
 
+    }
+    /**
+      * Retreive forums when create button is clicked
+      */
+    async function getforum(forum) {
+        try {
+            //get a document to our collection of forums
+            const docRef = doc(db, "Forums", forum);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                console.log("Document data:", docSnap.data());
+            } else {
+                // docSnap.data() will be undefined in this case
+                console.log("No such document!");
+            }
+            console.log("Document retrieved with ID: ", docRef.id);
+            // Catch = to log the error  or 'catch' it so it doesnt break code
+        } catch (e) {
+            console.error("Error getting document: ", e);
+        }
     }
 
     /**
@@ -375,6 +416,7 @@ window.onload = function () {
                 //     console.log('Incorrect password');
                 // }
                 loginPopup.style.display = 'none';
+                getUser(userSignedIn);
                 triggerForum();
 
             });
