@@ -5,7 +5,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { collection, doc, setDoc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -63,6 +63,9 @@ window.onload = function () {
     const browserSafari = document.querySelector('.Tor-pop-up');
     const browserSafariClose = document.querySelector('.safari-close');
 
+    //login vars
+    let userSignedIn;
+
     /**
      * Modal Openings, browsers and logins
      */
@@ -90,10 +93,6 @@ window.onload = function () {
 
     popupLoginTog.addEventListener('click', accPopUp);
 
-
-
-    //login vars
-    let userSignedIn;
 
 
     //Connect to Database - Firebase
@@ -151,11 +150,12 @@ window.onload = function () {
     function updateUser() {
         let user = currentUser.value;
         let pass = currentPass.value;
-        userNameDisplay.textContent = user;
-        userPassDisplay.textContent = pass;
+        // userNameDisplay.textContent = user;
+        // userPassDisplay.textContent = pass;
 
         //Calling from database.js
         startWebcam(user, pass);
+        appendToUser(user);
     }
 
     btn.addEventListener('click', updateUser);
@@ -198,9 +198,46 @@ window.onload = function () {
             });
 
         });
-        photo.style.display = 'block';
+        //photo.style.display = 'block';
     }
 
+    async function retrieveImage(userSignedIn) {
+
+        const storage = getStorage();
+        const photoRef = ref(storage, `users/${userSignedIn}.png`);
+
+
+        getDownloadURL(photoRef)
+            .then((url) => {
+                // Insert url into an <img> tag to "download"
+                photo.src = url;
+                photo.style.display = 'block';
+                // Append user name here!!!
+                console.log(url);
+            })
+            .catch((error) => {
+                // A full list of error codes is available at
+                // https://firebase.google.com/docs/storage/web/handle-errors
+                switch (error.code) {
+                    case 'storage/object-not-found':
+                        // File doesn't exist
+                        break;
+                    case 'storage/unauthorized':
+                        // User doesn't have permission to access the object
+                        break;
+                    case 'storage/canceled':
+                        // User canceled the upload
+                        break;
+
+                    // ...
+
+                    case 'storage/unknown':
+                        // Unknown error occurred, inspect the server response
+                        break;
+                }
+            });
+
+    }
     /**
       * Retreive forums when create button is clicked
       */
@@ -243,6 +280,8 @@ window.onload = function () {
             });
 
             console.log("Forum written with ID: ", docRef.id);
+            appendToForum(forum);
+            // getforum(forum);
         } catch (e) {
             console.error("Error adding forum: ", e);
         }
@@ -253,11 +292,12 @@ window.onload = function () {
    */
     function updateforum() {
         let forum = currentforum.value;
-        forumNameDisplay.textContent = forum;
+        //forumNameDisplay.textContent = forum;
 
         //Calling from database.js
         addforum(forum);
-        getforum(forum);
+        // getforum(forum);
+
 
     }
 
@@ -321,10 +361,64 @@ window.onload = function () {
                     //     console.log('Incorrect password');
                     // }
                     loginPopup.style.display = 'none';
-                    getUser(userSignedIn);
+                    //getUser(userSignedIn);
+                    retrieveImage(userSignedIn);
                     triggerForum();
 
                 });
+            });
+        });
+    }
+
+    async function appendToUser(doc) {
+        const userData = doc;
+        const loginPopup = document.querySelector('.login-pop-up');
+        const userList = document.querySelector('.user-list'); // Get the container
+
+        // Create the HTML elements dynamically
+        const userDiv = document.createElement('li');
+        userDiv.classList.add('user-item'); // Add a class for styling
+
+        // Create user name (p element)
+        const userName = document.createElement('p');
+        userName.textContent = doc;
+        //ai for the replace function
+        userName.classList.add(doc.trim().replace(/\s+/g, '-')); // Add dynamic class for user
+
+        // Create password input (initially hidden)
+        const passInput = document.createElement('input');
+        passInput.type = 'text';
+        passInput.classList.add(doc.trim().replace(/\s+/g, '-'), 'user-sign-in');
+        passInput.placeholder = 'Enter password';
+        passInput.style.display = 'none'; // Hide by default
+
+        // Append user name and password input to the user container
+        userDiv.appendChild(userName);
+        userDiv.appendChild(passInput);
+        userList.appendChild(userDiv);
+
+        const currentInput = userDiv.querySelector('.user-sign-in');
+
+        userName.addEventListener('click', function () {
+            currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
+
+            // Directly update userSignedIn here
+            userSignedIn = doc;  // This should correctly assign the signed-in user to the global variable
+            console.log(`Welcome ${userSignedIn}`);
+
+
+            // Trigger any further actions (like showing password input, etc.)
+            loginBtn.addEventListener('click', function () {
+                // if (currentInput.value === userData.pass) {
+                //     userSignedIn = userData.user;  // Update again if necessary
+                //     console.log(`${userData.user} signed in successfully`);
+                // } else {
+                //     console.log('Incorrect password');
+                // }
+                loginPopup.style.display = 'none';
+                getUser(userSignedIn);
+                triggerForum();
+
             });
         });
     }
@@ -371,9 +465,36 @@ window.onload = function () {
         });
     }
 
+    /**
+     * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
+     */
+    async function appendToForum(doc) {
+        const forumList = document.querySelector('.forum-list'); // Get the container
+        console.log(doc);
+        const forumData = doc;
 
+        // Create container for forum post
+        const forumDiv = document.createElement('li');
+        forumDiv.classList.add('forum-item');
 
-    console.log(userSignedIn);
+        //const welcomeUser = document.querySelector('.welcome-user');
+        //welcomeUser.textContent = `Welcome ${userSignedIn}`;
+
+        // Forum text
+        const forumName = document.createElement('p');
+        forumName.textContent = forumData
+        forumName.classList.add('forum-post');
+
+        // Display the user who created the forum post
+        const currentUser = document.createElement('p');
+        currentUser.textContent = `// ${userSignedIn}`;
+        currentUser.classList.add('forum-creator');
+
+        // Append to forum container
+        forumDiv.appendChild(currentUser);
+        forumDiv.appendChild(forumName);
+        forumList.appendChild(forumDiv);
+    }
 
 };
 
