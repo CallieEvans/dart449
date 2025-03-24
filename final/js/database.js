@@ -87,11 +87,11 @@ window.onload = function () {
     browserFolderTog.addEventListener('mouseout', folderUnhover);
 
     function folderHover() {
-        browserFolderTog.src = "/img/folder-hover.png";
+        browserFolderTog.src = "img/folder-hover.png";
     }
 
     function folderUnhover() {
-        browserFolderTog.src = "/img/folder-og.png"; // Replace with your default image
+        browserFolderTog.src = "img/folder-og.png"; // Replace with your default image
     }
 
     browserFolderTog.addEventListener("mouseover", folderHover);
@@ -112,11 +112,11 @@ window.onload = function () {
     browserTorTog.addEventListener('mouseout', torUnhover);
 
     function torHover() {
-        browserTorTog.src = "/img/tor-hover.png";
+        browserTorTog.src = "img/tor-hover.png";
     }
 
     function torUnhover() {
-        browserTorTog.src = "/img/tor-og.png"; // Replace with your default image
+        browserTorTog.src = "img/tor-og.png"; // Replace with your default image
     }
 
     browserTorTog.addEventListener("mouseover", torHover);
@@ -136,11 +136,11 @@ window.onload = function () {
     browserSafariTog.addEventListener('mouseout', safariUnhover);
 
     function safariHover() {
-        browserSafariTog.src = "/img/safari-hover.png";
+        browserSafariTog.src = "img/safari-hover.png";
     }
 
     function safariUnhover() {
-        browserSafariTog.src = "/img/safari-og.png"; // Replace with your default image
+        browserSafariTog.src = "img/safari-og.png"; // Replace with your default image
     }
 
     browserSafariTog.addEventListener("mouseover", safariHover);
