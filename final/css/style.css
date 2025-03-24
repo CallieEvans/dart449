@@ -109,10 +109,22 @@ main{
 }
 .safari{
   position: absolute;
-  top:20%;
-  left:50vw;
+  top:40%;
+  left:20vw;
   display: block;
 }
+
+.tor{
+  position: absolute;
+  top:20%;
+  left:80vw;
+  display: block;
+}
+
+.safari, .tor, .folder, .trash{
+  max-width: 100px;
+}
+
 .safari::after{
   content: ' ';
   display: block;
@@ -137,7 +149,7 @@ img{
   display: flex;
   justify-content: space-between;
 }
-.Tor-pop-up{
+.safari-b-pop-up{
   width:50%;
   min-height: 100vh;
   position: fixed;
@@ -147,7 +159,27 @@ img{
   display: none;
   
 }
-.Tor-pop-up .tor-modal{
+.tor-pop-up{
+  width:50%;
+  min-height: 100vh;
+  position: fixed;
+  top:0px;
+  right:4px;
+  align-items: center;
+  display: none;
+  
+}
+.folder-pop-up{
+  width:50%;
+  min-height: 100vh;
+  position: fixed;
+  top:0px;
+  right:4px;
+  align-items: center;
+  display: none;
+  
+}
+.safari-b-pop-up .safari-modal{
   margin:0 auto;
   max-width: 800px;
   width:100%;
@@ -163,6 +195,40 @@ img{
   min-height: 91vh;
   color:#0400F1;
 }
+ .tor-pop-up .tor-modal{
+  margin:0 auto;
+  max-width: 800px;
+  width:100%;
+  padding: 4em;
+    background-color: #0400F1;
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+  min-height: 91vh;
+  color:#EFEFEF;
+}
+
+ .folder-pop-up .folder-modal{
+  margin:0 auto;
+  max-width: 800px;
+  width:100%;
+  padding: 4em;
+    background-color: #0400F1;
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+  min-height: 91vh;
+  color:#EFEFEF;
+}
+
 .login-pop-up{
   width:100%;
   min-height: 100vh;

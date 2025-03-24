@@ -49,7 +49,7 @@ window.onload = function () {
     let currentPass = document.querySelector('#user-pass');
     const btn = document.querySelector('.submit');
     const forumNameDisplay = document.querySelector('.username-display');
-    let currentforum = document.querySelector('#topic');
+    let currentforum = document.querySelector('.topic');
     const btnForum = document.querySelector('.forum-sub');
 
     const loginBtn = document.querySelector('.login');
@@ -60,8 +60,16 @@ window.onload = function () {
     const popupLoginTog = document.querySelector('.login-popup');
 
     const browserSafariTog = document.querySelector('.safari');
-    const browserSafari = document.querySelector('.Tor-pop-up');
+    const browserSafari = document.querySelector('.safari-b-pop-up');
     const browserSafariClose = document.querySelector('.safari-close');
+
+    const browserTorTog = document.querySelector('.tor');
+    const browserTor = document.querySelector('.tor-pop-up');
+    const browserTorClose = document.querySelector('.tor-close');
+
+    const browserFolderTog = document.querySelector('.folder');
+    const browserFolder = document.querySelector('.folder-pop-up');
+    const browserFolderClose = document.querySelector('.folder-close');
 
     //login vars
     let userSignedIn;
@@ -69,10 +77,73 @@ window.onload = function () {
     /**
      * Modal Openings, browsers and logins
      */
+
+    //Folder
+    function openFolder() {
+        browserFolder.style.display = 'flex';
+    }
+    browserFolderTog.addEventListener('click', openFolder);
+    browserFolderTog.addEventListener('mouseover', folderHover);
+    browserFolderTog.addEventListener('mouseout', folderUnhover);
+
+    function folderHover() {
+        browserFolderTog.src = "/img/folder-hover.png";
+    }
+
+    function folderUnhover() {
+        browserFolderTog.src = "/img/folder-og.png"; // Replace with your default image
+    }
+
+    browserFolderTog.addEventListener("mouseover", folderHover);
+
+    function closeFolder() {
+        browserFolder.style.display = 'none';
+    }
+    browserFolderClose.addEventListener('click', closeFolder);
+
+
+
+    //tor
+    function openTor() {
+        browserTor.style.display = 'flex';
+    }
+    browserTorTog.addEventListener('click', openTor);
+    browserTorTog.addEventListener('mouseover', torHover);
+    browserTorTog.addEventListener('mouseout', torUnhover);
+
+    function torHover() {
+        browserTorTog.src = "/img/tor-hover.png";
+    }
+
+    function torUnhover() {
+        browserTorTog.src = "/img/tor-og.png"; // Replace with your default image
+    }
+
+    browserTorTog.addEventListener("mouseover", torHover);
+
+    function closeTor() {
+        browserTor.style.display = 'none';
+    }
+    browserTorClose.addEventListener('click', closeTor);
+
+
+    //safari
     function openSafari() {
         browserSafari.style.display = 'flex';
     }
     browserSafariTog.addEventListener('click', openSafari);
+    browserSafariTog.addEventListener('mouseover', safariHover);
+    browserSafariTog.addEventListener('mouseout', safariUnhover);
+
+    function safariHover() {
+        browserSafariTog.src = "/img/safari-hover.png";
+    }
+
+    function safariUnhover() {
+        browserSafariTog.src = "/img/safari-og.png"; // Replace with your default image
+    }
+
+    browserSafariTog.addEventListener("mouseover", safariHover);
 
     function closeSafari() {
         browserSafari.style.display = 'none';
@@ -391,20 +462,21 @@ window.onload = function () {
         const forumsRef = collection(db, "Forums"); // Reference to the "forums" collection
         const forumLoginList = await getDocs(forumsRef); // Fetch all documents
 
+        const forumLists = document.querySelectorAll('.forum-list'); // Get all forum containers
 
-        const forumList = document.querySelector('.forum-list'); // Get the container
-        forumList.innerHTML = ''; // Clear previous forums
+        forumLists.forEach(forumList => {
+            forumList.innerHTML = ''; // Clear previous forums
+        });
 
-        // Loop through each forum in the database
+        let i = 0;
+
         forumLoginList.forEach((doc) => {
+            i++;
             const forumData = doc.data();
 
             // Create container for forum post
             const forumDiv = document.createElement('li');
             forumDiv.classList.add('forum-item');
-
-            const welcomeUser = document.querySelector('.welcome-user');
-            welcomeUser.textContent = `Welcome ${userSignedIn}`;
 
             // Forum text
             const forumName = document.createElement('p');
@@ -413,21 +485,30 @@ window.onload = function () {
 
             // Display the user who created the forum post
             const currentUser = document.createElement('p');
-            currentUser.textContent = `// ${forumData.currentUser || 'Unknown'}`;
+            currentUser.textContent = ` ${String(i).padStart(2, '0')} // ${forumData.currentUser}`;
             currentUser.classList.add('forum-creator');
 
-            // Append to forum container
+            // Append elements to forum container
             forumDiv.appendChild(currentUser);
             forumDiv.appendChild(forumName);
-            forumList.appendChild(forumDiv);
+
+            // Append to ALL forum lists
+            forumLists.forEach(forumList => {
+                forumList.appendChild(forumDiv.cloneNode(true)); // Clone node to avoid moving it
+            });
         });
+
+        // Update welcome message
+        const welcomeUser = document.querySelector('.welcome-user');
+        welcomeUser.textContent = `Welcome ${userSignedIn}`;
     }
 
     /**
      * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
      */
     async function appendToForum(doc) {
-        const forumList = document.querySelector('.forum-list'); // Get the container
+        const forumLists = document.querySelectorAll('.forum-list'); // Get all forum containers
+
         console.log(doc);
         const forumData = doc;
 
@@ -435,12 +516,9 @@ window.onload = function () {
         const forumDiv = document.createElement('li');
         forumDiv.classList.add('forum-item');
 
-        //const welcomeUser = document.querySelector('.welcome-user');
-        //welcomeUser.textContent = `Welcome ${userSignedIn}`;
-
         // Forum text
         const forumName = document.createElement('p');
-        forumName.textContent = forumData
+        forumName.textContent = forumData;
         forumName.classList.add('forum-post');
 
         // Display the user who created the forum post
@@ -448,12 +526,15 @@ window.onload = function () {
         currentUser.textContent = `// ${userSignedIn}`;
         currentUser.classList.add('forum-creator');
 
-        // Append to forum container
+        // Append elements to forum container
         forumDiv.appendChild(currentUser);
         forumDiv.appendChild(forumName);
-        forumList.appendChild(forumDiv);
-    }
 
-};
+        // Append to ALL forum lists
+        forumLists.forEach(forumList => {
+            forumList.appendChild(forumDiv.cloneNode(true)); // Clone node to avoid moving it
+        });
+    }
+}
 
 
