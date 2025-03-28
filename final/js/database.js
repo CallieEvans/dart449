@@ -471,7 +471,7 @@ window.onload = function () {
 
         let i = 0;
 
-        forumLoginList.forEach(async (doc) => {
+        for (const doc of forumLoginList.docs) {
             i++;
             const forumData = doc.data();
             const repliesRef = collection(db, "Replies");
@@ -573,8 +573,9 @@ window.onload = function () {
             results.forEach((doc) => {
                 appendToReply(doc.data().reply, forumName, doc.data().currentUser);
 
+
             });
-        });
+        };
 
         // Update welcome message
         const welcomeUser = document.querySelectorAll('.welcome-user');
