@@ -245,7 +245,7 @@ img{
   display: flex;
   justify-content: space-between;
 }
-.forum-item{
+.forum-item .forum-container .inner{
   display: flex;
   justify-content: space-between;
 }
@@ -269,6 +269,9 @@ img{
 }
 
 .create-acc{
+  display: none;
+}
+.reply-container{
   display: none;
 }
 

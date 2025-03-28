@@ -4,7 +4,7 @@
 // https://firebase.google.com/docs/firestore/quickstart
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-import { collection, doc, setDoc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { collection, doc, setDoc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -471,13 +471,40 @@ window.onload = function () {
 
         let i = 0;
 
-        forumLoginList.forEach((doc) => {
+        forumLoginList.forEach(async (doc) => {
             i++;
             const forumData = doc.data();
+            const repliesRef = collection(db, "Replies");
+            const queryReplies = query(repliesRef,
+                where('forumPost', '==', forumData.forum)
+            );
+            const results = await getDocs(queryReplies);
+
 
             // Create container for forum post
             const forumDiv = document.createElement('li');
             forumDiv.classList.add('forum-item');
+
+            // Forum text container 
+            const forumContainer = document.createElement('div');
+            forumContainer.classList.add('forum-container');
+
+            // inner forum text container 
+            const innerForum = document.createElement('div');
+            innerForum.classList.add('inner');
+
+            // reply text container 
+            const replyContainer = document.createElement('div');
+            replyContainer.classList.add('reply-container');
+            replyContainer.style.display = 'none'; // Initially hidden
+
+
+            // reply btn
+            const replyBtn = document.createElement('button'); // Changed from 'btn' to 'button'
+            replyBtn.textContent = 'Reply';
+            replyBtn.classList.add('reply-btn');
+
+
 
             // Forum text
             const forumName = document.createElement('p');
@@ -489,25 +516,65 @@ window.onload = function () {
             currentUser.textContent = ` ${String(i).padStart(2, '0')} // ${forumData.currentUser}`;
             currentUser.classList.add('forum-creator');
 
-            // Display the user who created the forum post
+            // Reply input field
             const replyInputs = document.createElement('input');
+            replyInputs.type = 'text';
             replyInputs.classList.add('reply-input');
 
-            // Display the user who created the forum post
+            // Reply submit button
             const replySubmit = document.createElement('button');
             replySubmit.classList.add('reply-submit');
+            replySubmit.textContent = 'Submit';
 
-            // Append elements to forum container
-            forumDiv.appendChild(replyInputs);
-            forumDiv.appendChild(replySubmit);
-            forumDiv.appendChild(currentUser);
-            forumDiv.appendChild(forumName);
 
-            // Append to ALL forum lists
-            forumLists.forEach(forumList => {
-                forumList.appendChild(forumDiv.cloneNode(true)); // Clone node to avoid moving it
+            console.log(replySubmit);
+
+
+            // Append elements
+            replyContainer.appendChild(replyInputs);
+            replyContainer.appendChild(replySubmit);
+            innerForum.appendChild(currentUser);
+            innerForum.appendChild(forumName);
+            forumContainer.appendChild(innerForum);
+            forumContainer.appendChild(replyBtn);
+            forumDiv.appendChild(forumContainer);
+            forumDiv.appendChild(replyContainer);
+
+            // Add event listener for reply button
+            replyBtn.addEventListener('click', function () {
+                replyContainer.style.display = 'block';
+            });
+
+
+            replySubmit.addEventListener('click', function () { updateReply(replyInputs) });
+
+            forumLists[0].appendChild(forumDiv);
+
+
+            const clonedForumDiv = forumDiv.cloneNode(true);
+            clonedForumDiv.id = `cloned-forun-div-${forumData.currentUser}-${i}`;
+            forumDiv.setAttribute("cloneRef", clonedForumDiv.id);
+
+            forumDiv.id = `orig-forun-div-${forumData.currentUser}-${i}`;
+            clonedForumDiv.setAttribute("origRef", forumDiv.id);
+
+
+            // add event listener to the cloned reply button
+            clonedForumDiv.querySelector('.reply-btn').addEventListener('click', function () {
+                clonedForumDiv.querySelector('.reply-container').style.display = 'block';
+            });
+            clonedForumDiv.querySelector('.reply-submit').addEventListener('click', function () { updateReply(clonedForumDiv.querySelector('.reply-input')) });
+
+            forumLists[1].appendChild(clonedForumDiv);
+
+
+
+            results.forEach((doc) => {
+                appendToReply(doc.data().reply, forumName, doc.data().currentUser);
+
             });
         });
+
 
         // Update welcome message
         const welcomeUser = document.querySelector('.welcome-user');
@@ -553,7 +620,7 @@ window.onload = function () {
     /**
     * Replies lmao
     */
-    async function addreply(reply) {
+    async function addreply(reply, forumPostContainer) {
         try {
             const repliesRef = collection(db, 'Replies');
             const docRef = doc(repliesRef, reply);
@@ -561,45 +628,48 @@ window.onload = function () {
             // Add forum with user reference
             await setDoc(docRef, {
                 reply: reply,
-                forumPost: forumPost,
+                forumPost: forumPostContainer.textContent,
                 currentUser: userSignedIn // Associate with signed-in user
             });
 
             console.log("reply written with ID: ", docRef.id);
-            appendToReply(reply);
+            appendToReply(reply, forumPostContainer, userSignedIn);
             // getforum(forum);
         } catch (e) {
             console.error("Error adding reply: ", e);
         }
     }
 
-    console.log(forumPost);
     /**
     * Update the forum name & password
     */
-    function updateReply() {
-        const currentreply = document.querySelector('.reply-input');
+    function updateReply(replyInputs) {
+        // e.preventDefault();
+        console.log('updating reply');
+        const currentreply = replyInputs
         let reply = currentreply.value;
+        let forumPostContainer = currentreply.parentElement.parentElement.querySelector('.forum-post');
         //forumNameDisplay.textContent = forum;
 
         //Calling from database.js
-        addreply(reply);
+        addreply(reply, forumPostContainer);
         // getforum(forum);
 
 
     }
-    const replySubmit = document.querySelector('.reply-submit');
+    // const replySubmit = document.querySelector('.reply-submit');
 
-    replySubmit.addEventListener('click', updateReply);
 
 
     /**
      * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
      */
-    async function appendToReply(doc) {
-        const ReplyLists = document.querySelectorAll('.forum-list'); // Get all forum containers
+    async function appendToReply(doc, forumContainer, userReplied) {
+        //const ReplyLists = document.querySelectorAll('.forum-list'); // Get all forum containers
+        let forumItem = forumContainer.parentElement.parentElement.parentElement;
+        let replyContainer = forumItem.querySelector('.reply-container');
 
-        console.log(doc);
+        //console.log(doc.data());
         const replyData = doc;
 
         // Create container for forum post
@@ -613,17 +683,36 @@ window.onload = function () {
 
         // Display the user who created the forum post
         const currentUser = document.createElement('p');
-        currentUser.textContent = `// ${userSignedIn}`;
+        currentUser.textContent = `// ${userReplied}`;
         currentUser.classList.add('reply-creator');
 
         // Append elements to forum container
         replyDiv.appendChild(currentUser);
         replyDiv.appendChild(replyName);
+        replyContainer.appendChild(replyDiv);
+
+        let cloneReply = replyDiv.cloneNode(true);
+        let refId = forumItem.getAttribute("cloneRef");
+        if (refId === null) {
+            console.log("nnnn");
+            let origId = forumItem.getAttribute("origRef");
+
+            let replyContainer_clone = document.querySelector(`#${origId}`).querySelector('.reply-container');
+            replyContainer_clone.appendChild(cloneReply);
+        }
+        else {
+            let replyContainer_clone = document.querySelector(`#${refId}`).querySelector('.reply-container');
+
+            replyContainer_clone.appendChild(cloneReply);
+        }
+
+
 
         // Append to ALL forum lists
-        ReplyLists.forEach(replyList => {
-            replyList.appendChild(replyDiv.cloneNode(true)); // Clone node to avoid moving it
-        });
+        // ReplyLists.forEach(replyList => {
+        // ReplyLists[1].appendChild(replyDiv.cloneNode(true));
+        // ReplyLists[0].appendChild(replyDiv);// Clone node to avoid moving it
+        // });
     }
 
 }
