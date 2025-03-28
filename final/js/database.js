@@ -545,8 +545,17 @@ window.onload = function () {
                 replyContainer.style.display = 'block';
             });
 
+            // Update welcome message
+            const welcomeUser = document.querySelectorAll('.welcome-user');
+            welcomeUser.forEach(element => {
+                element.textContent = `Welcome ${userSignedIn}`;
+            });
+
+
 
             replySubmit.addEventListener('click', function () { updateReply(replyInputs) });
+
+
 
             forumLists[0].appendChild(forumDiv);
 
@@ -557,6 +566,7 @@ window.onload = function () {
 
             forumDiv.id = `orig-forun-div-${forumData.currentUser}-${i}`;
             clonedForumDiv.setAttribute("origRef", forumDiv.id);
+
 
 
             // add event listener to the cloned reply button
@@ -576,9 +586,7 @@ window.onload = function () {
         });
 
 
-        // Update welcome message
-        const welcomeUser = document.querySelector('.welcome-user');
-        welcomeUser.textContent = `Welcome ${userSignedIn}`;
+
     }
 
     /**
@@ -615,7 +623,7 @@ window.onload = function () {
     }
 
 
-    const forumPost = document.querySelector('.forumPost');
+    //const forumPost = document.querySelector('.forumPost');
 
     /**
     * Replies lmao
