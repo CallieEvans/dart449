@@ -545,17 +545,8 @@ window.onload = function () {
                 replyContainer.style.display = 'block';
             });
 
-            // Update welcome message
-            const welcomeUser = document.querySelectorAll('.welcome-user');
-            welcomeUser.forEach(element => {
-                element.textContent = `Welcome ${userSignedIn}`;
-            });
-
-
 
             replySubmit.addEventListener('click', function () { updateReply(replyInputs) });
-
-
 
             forumLists[0].appendChild(forumDiv);
 
@@ -585,6 +576,11 @@ window.onload = function () {
             });
         });
 
+        // Update welcome message
+        const welcomeUser = document.querySelectorAll('.welcome-user');
+        welcomeUser.forEach(element => {
+            element.textContent = `Welcome ${userSignedIn}`;
+        });
 
 
     }
