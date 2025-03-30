@@ -31,6 +31,7 @@ const firebaseConfig = {
 };
 
 window.onload = function () {
+
     // Initialize Firebase & firebase storage
     const app = initializeApp(firebaseConfig);
     const storage = getStorage(app);
@@ -73,6 +74,8 @@ window.onload = function () {
     const browserFolder = document.querySelector('.folder-pop-up');
     const browserFolderClose = document.querySelector('.folder-close');
 
+    const userTextImage = document.querySelector('.img-user-signed-in');
+
 
     //login vars
     let userSignedIn;
@@ -80,7 +83,6 @@ window.onload = function () {
     /**
      * Modal Openings, browsers and logins
      */
-
     //Folder
     function openFolder() {
         browserFolder.style.display = 'flex';
@@ -267,7 +269,8 @@ window.onload = function () {
                 photo.src = url;
                 photo.style.display = 'block';
                 // Append user name here!!!
-                console.log(url);
+                //Add username to the bottom underneath image
+                userTextImage.textContent = `${userSignedIn}`;
             })
             .catch((error) => {
                 // A full list of error codes is available at
@@ -538,6 +541,13 @@ window.onload = function () {
             delBtn.textContent = 'Delete';
             delBtn.classList.add('delete-btn');
 
+            //Add comments section
+            let comI = results.size; // Count the number of replies
+            const comments = document.createElement('p');
+            //Got help from chatGPT
+            comments.textContent = `${comI} comment${comI === 1 ? '' : 's'}`;
+            comments.classList.add('comment-count');
+
 
             // Forum text
             const forumName = document.createElement('p');
@@ -566,6 +576,7 @@ window.onload = function () {
             innerForum.appendChild(currentUser);
             innerForum.appendChild(forumName);
             forumContainer.appendChild(innerForum);
+            forumContainer.appendChild(comments);
             forumContainer.appendChild(replyBtn);
             forumContainer.appendChild(delBtn);
             forumDiv.appendChild(forumContainer);
@@ -634,6 +645,36 @@ window.onload = function () {
         welcomeUser.forEach(element => {
             element.textContent = `Welcome ${userSignedIn}`;
         });
+
+
+        let forumText = document.querySelectorAll('.safari-b-pop-up .forum-post');
+
+        // Sorted list of symbols
+        const symbols = ['!', '#', '@', '^', '█', '5', '93', '2', '0', '█'];
+
+        function replaceWithRandomSymbols(text) {
+            let replacedText = '';
+
+            // Loop through each character of the text and replace it with a random symbol
+            for (let i = 0; i < text.length; i++) {
+                const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                replacedText += randomSymbol;
+            }
+
+            return replacedText;
+        }
+
+        // Example usage
+        forumText.forEach(element => {
+            const inputText = element.textContent;
+            const outputText = replaceWithRandomSymbols(inputText);
+            console.log(outputText);
+
+            // Update the text content of the element with random symbols
+            element.textContent = `${outputText}`;
+        });
+
+
 
 
     }
@@ -824,7 +865,6 @@ window.onload = function () {
         let forumItem = forumContainer.parentElement.parentElement.parentElement;
         let replyContainer = forumItem.querySelector('.reply-container');
 
-        //console.log(doc.data());
         const replyData = doc;
 
         // Create container for forum post

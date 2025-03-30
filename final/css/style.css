@@ -256,6 +256,9 @@ img{
 .tor-pop-up .delete-btn{
   display: none !important;
 }
+.ip{
+  display: flex;
+}
 .login-pop-up .modal{
   background-color:blue;
   margin:0 auto;

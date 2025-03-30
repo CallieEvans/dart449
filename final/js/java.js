@@ -18,82 +18,77 @@ setInterval(updateTime, 1000);
 // Call once to set the time immediately
 updateTime();
 
+document.addEventListener('DOMContentLoaded', function () {
+    let login = document.querySelector('.login');
 
-const browserSafariTog = document.querySelector('.safari');
-const browserSafari = document.querySelector('.safari-pop-up');
-const browserSafariClose = document.querySelector('.safari-close');
+    function decryptText() {
+        let forumText = document.querySelectorAll('.forum-post');
+
+        // Sorted list of symbols
+        const symbols = ['!', '#', '@', '^', '█', '5', '93', '2', '0', '█'];
+
+        function replaceWithRandomSymbols(text) {
+            let replacedText = '';
+
+            // Loop through each character of the text and replace it with a random symbol
+            for (let i = 0; i < text.length; i++) {
+                const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                replacedText += randomSymbol;
+            }
+
+            return replacedText;
+        }
+
+        // Example usage
+        forumText.forEach(element => {
+            const inputText = element.textContent;
+            const outputText = replaceWithRandomSymbols(inputText);
+            console.log(outputText);
+
+            // Update the text content of the element with random symbols
+            element.textContent = `${outputText}`;
+        });
+    }
+
+    // Set up the event listener to call decryptText when login is clicked
+    login.addEventListener('click', decryptText);  // Do not call decryptText() here
 
 
-// const popupLoginPop = document.querySelector('.users');
-// const popupCreAccPop = document.querySelector('.create-acc');
-// const popupCreAccTog = document.querySelector('.account-popup');
-// const popupLoginTog = document.querySelector('.login-popup');
 
-// const browserTorTog = document.querySelector('.tor');
-// const browserTor = document.querySelector('.tor-pop-up');
-// const browserTorClose = document.querySelector('.tor-close');
 
-// //login vars
-let userSignedIn;
+    const cityDisplay = document.querySelector('.city');
+    const provDisplay = document.querySelector('.province');
+    const ipDisplay = document.querySelector('.ip-address');
 
-/**
- * Modal Openings, browsers and logins
- */
-// function openSafari() {
-//     browserSafari.style.display = 'flex';
-// }
-// browserSafariTog.addEventListener('click', openSafari);
-// browserSafariTog.addEventListener('mouseover', safariHover);
-// browserSafariTog.addEventListener('mouseout', safariUnhover);
+    /**
+        * Get IP address / location done with ChatGPT
+        */
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            const ip = data.ip;
+            console.log('Public IP address:', ip);
+            ipDisplay.textContent = `${ip}`;
 
-// function safariHover() {
-//     browserSafariTog.src = "/img/safari-hover.png";
-// }
+            // Now fetch the geolocation info based on the IP
+            return fetch(`https://ipinfo.io/${ip}/json`);
+        })
+        .then(response => response.json())
+        .then(locationData => {
+            console.log('Location Data:', locationData);
 
-// function safariUnhover() {
-//     browserSafariTog.src = "/img/safari-og.png"; // Replace with your default image
-// }
+            // Extract city, region (province/state), and country
+            const city = locationData.city;
+            const region = locationData.region; // This will typically be the province or state
+            const country = locationData.country;
 
-// browserSafariTog.addEventListener("mouseover", safariHover);
+            cityDisplay.textContent = `${city} //`;
+            provDisplay.textContent = `${region} //`;
 
-// function closeSafari() {
-//     browserSafari.style.display = 'none';
-// }
-// browserSafariClose.addEventListener('click', closeSafari);
+            console.log(`City: ${city}, Province/State: ${region}, Country: ${country}`);
+        })
+        .catch(error => {
+            console.error('Error fetching location data:', error);
+        });
 
-// //Tor
-// function openTor() {
-//     browserTor.style.display = 'flex';
-// }
-// browserTorTog.addEventListener('click', openTor);
-// browserTorTog.addEventListener('mouseover', torHover);
-// browserTorTog.addEventListener('mouseout', torUnhover);
-
-// function torHover() {
-//     browserTorTog.src = "/img/tor-hover.png";
-// }
-
-// function torUnhover() {
-//     browserTorTog.src = "/img/tor-og.png"; // Replace with your default image
-// }
-
-// browserTorTog.addEventListener("mouseover", torHover);
-
-// function closeTor() {
-//     browserTor.style.display = 'none';
-// }
-// browserTorClose.addEventListener('click', closeTor);
-// //logins
-// function loginPopUp() {
-//     popupCreAccPop.style.display = 'block';
-//     popupLoginPop.style.display = 'none';
-// }
-
-// popupCreAccTog.addEventListener('click', loginPopUp);
-
-// function accPopUp() {
-//     popupCreAccPop.style.display = 'none';
-//     popupLoginPop.style.display = 'block';
-// }
-
-// popupLoginTog.addEventListener('click', accPopUp);
+});
