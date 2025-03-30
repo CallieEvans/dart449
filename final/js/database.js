@@ -50,7 +50,9 @@ window.onload = function () {
     const btn = document.querySelector('.submit');
     const forumNameDisplay = document.querySelector('.username-display');
     let currentforum = document.querySelector('.topic');
+    let currentforumTor = document.querySelector('.topic-tor');
     const btnForum = document.querySelector('.forum-sub');
+    const btnForumTor = document.querySelector('.forum-sub-tor');
 
     const loginBtn = document.querySelector('.login');
 
@@ -294,7 +296,7 @@ window.onload = function () {
     /**
  * Add forum post
  */
-    async function addforum(forum) {
+    async function addforum(forum, i) {
         //This was AI, I couldn't figure it out
         if (!userSignedIn) {
             console.error("No user signed in.");
@@ -311,7 +313,7 @@ window.onload = function () {
             });
 
             console.log("Forum written with ID: ", docRef.id);
-            appendToForum(forum);
+            appendToForum(forum, i);
             // getforum(forum);
         } catch (e) {
             console.error("Error adding forum: ", e);
@@ -321,18 +323,36 @@ window.onload = function () {
     /**
    * Update the forum name & password
    */
-    function updateforum() {
+    function updateforum(i) {
         let forum = currentforum.value;
+        i = document.querySelectorAll('.safari-b-pop-up .forum-item').length + 1; // Calculate new index
         //forumNameDisplay.textContent = forum;
 
         //Calling from database.js
-        addforum(forum);
+        addforum(forum, i);
         // getforum(forum);
 
 
     }
 
     btnForum.addEventListener('click', updateforum);
+
+    /**
+* Update the forum name & password
+*/
+    function updateforumTor(i) {
+        let forum = currentforumTor.value;
+        i = document.querySelectorAll('.tor-pop-up .forum-item').length + 1; // Calculate new index
+        //forumNameDisplay.textContent = forum;
+
+        //Calling from database.js
+        addforum(forum, i);
+        // getforum(forum);
+
+
+    }
+
+    btnForumTor.addEventListener('click', updateforumTor);
 
     /**
     * Update the user name & password
@@ -589,7 +609,7 @@ window.onload = function () {
     /**
      * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
      */
-    async function appendToForum(doc) {
+    async function appendToForum(doc, i) {
         const forumLists = document.querySelectorAll('.forum-list'); // Get all forum containers
 
         console.log(doc);
@@ -616,6 +636,7 @@ window.onload = function () {
         // Append to ALL forum lists
         forumLists.forEach(forumList => {
             forumList.appendChild(forumDiv.cloneNode(true)); // Clone node to avoid moving it
+
         });
     }
 

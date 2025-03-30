@@ -249,6 +249,10 @@ img{
   display: flex;
   justify-content: space-between;
 }
+.forum-list{
+  overflow:scroll !important;
+  max-height: 60vh;
+}
 .login-pop-up .modal{
   background-color:blue;
   margin:0 auto;
