@@ -425,12 +425,15 @@ window.onload = function () {
                     loginPopup.style.display = 'none';
                     //getUser(userSignedIn);
                     retrieveImage(userSignedIn);
-                    triggerForum();
+
 
                 });
             });
+
         });
     }
+
+
 
     async function appendToUser(doc) {
         const userData = doc;
@@ -647,9 +650,9 @@ window.onload = function () {
 
 
         decryptText();
-
-
     }
+
+    triggerForum();
     /**
      * Decrypting ther text
      */
