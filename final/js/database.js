@@ -45,9 +45,9 @@ window.onload = function () {
 
     const userNameDisplay = document.querySelector('.username-display');
 
-    const userPassDisplay = document.querySelector('.userpass');
+    // const userPassDisplay = document.querySelector('.userpass');
     let currentUser = document.querySelector('#user-input');
-    let currentPass = document.querySelector('#user-pass');
+    //let currentPass = document.querySelector('#user-pass');
     const btn = document.querySelector('.submit');
     const forumNameDisplay = document.querySelector('.username-display');
     let currentforum = document.querySelector('.topic');
@@ -177,7 +177,7 @@ window.onload = function () {
      * Add user function
      */
     //Await has to be combine with async, to issue the js knows to wait
-    async function addUser(user, pass) {
+    async function addUser(user) {
         //Try = try to call the collection, Await tells to wait until the docs are found
         try {
             //add a document to our collection of users
@@ -189,8 +189,7 @@ window.onload = function () {
             const usersRef = collection(db, 'Users');
             const docRef = doc(usersRef, user);
             await setDoc(docRef, {
-                user: user,
-                pass: pass
+                user: user
             });
             console.log("Document written with ID: ", docRef.id);
             // Catch = to log the error  or 'catch' it so it doesnt break code
@@ -205,12 +204,12 @@ window.onload = function () {
  */
     function updateUser() {
         let user = currentUser.value;
-        let pass = currentPass.value;
+        // let pass = currentPass.value;
         // userNameDisplay.textContent = user;
         // userPassDisplay.textContent = pass;
 
         //Calling from database.js
-        startWebcam(user, pass);
+        startWebcam(user);
         appendToUser(user);
     }
 
@@ -219,14 +218,14 @@ window.onload = function () {
     /**
  * Start the webcam and streama video , came partly from Chatgpt
  */
-    async function startWebcam(user, pass) {
+    async function startWebcam(user) {
         //Check and log errors? (try and catch)
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             video.srcObject = stream;
 
             video.onloadedmetadata = () => {
-                setTimeout(() => takePhoto(user, pass), 500);
+                setTimeout(() => takePhoto(user), 500);
             };
         } catch (error) {
             console.error("Error accessing webcam:", error);
@@ -236,7 +235,7 @@ window.onload = function () {
     /**
  * take photo of user and upload the the database
  */
-    function takePhoto(user, pass) {
+    function takePhoto(user) {
         const context = canvas.getContext('2d');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
@@ -250,7 +249,7 @@ window.onload = function () {
             // 'file' comes from the Blob or File API
             uploadBytes(storageRef, blob).then((snapshot) => {
                 console.log('Uploaded a blob or file!');
-                addUser(user, pass);
+                addUser(user);
             });
 
         });
@@ -394,21 +393,21 @@ window.onload = function () {
             userName.classList.add(userData.user.trim().replace(/\s+/g, '-')); // Add dynamic class for user
 
             // Create password input (initially hidden)
-            const passInput = document.createElement('input');
-            passInput.type = 'text';
-            passInput.classList.add(userData.user.trim().replace(/\s+/g, '-'), 'user-sign-in');
-            passInput.placeholder = 'Enter password';
-            passInput.style.display = 'none'; // Hide by default
+            // const passInput = document.createElement('input');
+            // passInput.type = 'text';
+            // passInput.classList.add(userData.user.trim().replace(/\s+/g, '-'), 'user-sign-in');
+            // passInput.placeholder = 'Enter password';
+            // passInput.style.display = 'none'; // Hide by default
 
             // Append user name and password input to the user container
             userDiv.appendChild(userName);
-            userDiv.appendChild(passInput);
+            //userDiv.appendChild(passInput);
             userList.appendChild(userDiv);
 
-            const currentInput = userDiv.querySelector('.user-sign-in');
+            //const currentInput = userDiv.querySelector('.user-sign-in');
             // Add event listener to the user name
             userName.addEventListener('click', function () {
-                currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
+                //currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
 
                 // Directly update userSignedIn here
                 userSignedIn = userData.user;  // This should correctly assign the signed-in user to the global variable
@@ -449,21 +448,21 @@ window.onload = function () {
         userName.classList.add(doc.trim().replace(/\s+/g, '-')); // Add dynamic class for user
 
         // Create password input (initially hidden)
-        const passInput = document.createElement('input');
-        passInput.type = 'text';
-        passInput.classList.add(doc.trim().replace(/\s+/g, '-'), 'user-sign-in');
-        passInput.placeholder = 'Enter password';
-        passInput.style.display = 'none'; // Hide by default
+        // const passInput = document.createElement('input');
+        // passInput.type = 'text';
+        // passInput.classList.add(doc.trim().replace(/\s+/g, '-'), 'user-sign-in');
+        // passInput.placeholder = 'Enter password';
+        // passInput.style.display = 'none'; // Hide by default
 
         // Append user name and password input to the user container
         userDiv.appendChild(userName);
-        userDiv.appendChild(passInput);
+        //userDiv.appendChild(passInput);
         userList.appendChild(userDiv);
 
-        const currentInput = userDiv.querySelector('.user-sign-in');
+        // = userDiv.querySelector('.user-sign-in');
 
         userName.addEventListener('click', function () {
-            currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
+            //currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
 
             // Directly update userSignedIn here
             userSignedIn = doc;  // This should correctly assign the signed-in user to the global variable
@@ -647,7 +646,15 @@ window.onload = function () {
         });
 
 
-        let forumText = document.querySelectorAll('.safari-b-pop-up .forum-post');
+        decryptText();
+
+
+    }
+    /**
+     * Decrypting ther text
+     */
+    function decryptText() {
+        let forumText = document.querySelectorAll('.safari-b-pop-up .forum-post, .safari-b-pop-up .reply-post');
 
         // Sorted list of symbols
         const symbols = ['!', '#', '@', '^', '█', '5', '93', '2', '0', '█'];
@@ -673,10 +680,6 @@ window.onload = function () {
             // Update the text content of the element with random symbols
             element.textContent = `${outputText}`;
         });
-
-
-
-
     }
 
     /**
@@ -807,6 +810,8 @@ window.onload = function () {
         });
 
         forumLists[1].appendChild(clonedForumDiv);
+
+        decryptText();
     }
 
 
