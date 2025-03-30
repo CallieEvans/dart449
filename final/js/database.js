@@ -905,7 +905,7 @@ window.onload = function () {
             replyContainer_clone.appendChild(cloneReply);
         }
 
-
+        decryptText();
 
         // Append to ALL forum lists
         // ReplyLists.forEach(replyList => {
