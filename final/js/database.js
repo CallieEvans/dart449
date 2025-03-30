@@ -4,7 +4,7 @@
 // https://firebase.google.com/docs/firestore/quickstart
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-import { collection, doc, setDoc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { collection, doc, setDoc, getDoc, getDocs, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -297,14 +297,14 @@ window.onload = function () {
  * Add forum post
  */
     async function addforum(forum, i) {
-        //This was AI, I couldn't figure it out
+        // Check if a user is signed in
         if (!userSignedIn) {
             console.error("No user signed in.");
             return;
         }
         try {
             const forumsRef = collection(db, 'Forums');
-            const docRef = doc(forumsRef, forum);
+            const docRef = doc(forumsRef); // Generate a document reference without passing the forum as the ID
 
             // Add forum with user reference
             await setDoc(docRef, {
@@ -313,12 +313,21 @@ window.onload = function () {
             });
 
             console.log("Forum written with ID: ", docRef.id);
-            appendToForum(forum, i);
-            // getforum(forum);
+
+            // Now pass the forum data object, including the document ID
+            const forumData = {
+                id: docRef.id,
+                forum: forum,
+                currentUser: userSignedIn
+            };
+
+            // Pass the forumData object to appendToForum
+            appendToForum(forumData, i);
         } catch (e) {
             console.error("Error adding forum: ", e);
         }
     }
+
 
     /**
    * Update the forum name & password
@@ -491,9 +500,9 @@ window.onload = function () {
 
         let i = 0;
 
-        for (const doc of forumLoginList.docs) {
+        for (const forumDoc of forumLoginList.docs) { // Renamed 'doc' to 'forumDoc'
             i++;
-            const forumData = doc.data();
+            const forumData = forumDoc.data();
             const repliesRef = collection(db, "Replies");
             const queryReplies = query(repliesRef,
                 where('forumPost', '==', forumData.forum)
@@ -524,6 +533,10 @@ window.onload = function () {
             replyBtn.textContent = 'Reply';
             replyBtn.classList.add('reply-btn');
 
+            //Add delete section
+            const delBtn = document.createElement('button'); // Changed from 'btn' to 'button'
+            delBtn.textContent = 'Delete';
+            delBtn.classList.add('delete-btn');
 
 
             // Forum text
@@ -547,9 +560,6 @@ window.onload = function () {
             replySubmit.textContent = 'Submit';
 
 
-            console.log(replySubmit);
-
-
             // Append elements
             replyContainer.appendChild(replyInputs);
             replyContainer.appendChild(replySubmit);
@@ -557,6 +567,7 @@ window.onload = function () {
             innerForum.appendChild(forumName);
             forumContainer.appendChild(innerForum);
             forumContainer.appendChild(replyBtn);
+            forumContainer.appendChild(delBtn);
             forumDiv.appendChild(forumContainer);
             forumDiv.appendChild(replyContainer);
 
@@ -564,7 +575,28 @@ window.onload = function () {
             replyBtn.addEventListener('click', function () {
                 replyContainer.style.display = 'block';
             });
+            //delete function but only for first forum
+            delBtn.addEventListener('click', async function () {
+                try {
+                    // Get the forum ID from the current document (forumDoc)
+                    const forumId = forumDoc.id; // Now using forumDoc.id
 
+                    // Get a reference to the document
+                    const docRef = doc(db, "Forums", forumId);
+
+                    // Delete the document from Firestore
+                    await deleteDoc(docRef);
+
+                    // Remove the forum item from both the original and cloned forum lists
+                    forumLists[0].removeChild(forumDiv);
+                    forumLists[1].removeChild(clonedForumDiv); // Remove the cloned forum from the second list
+
+                    console.log(`Forum post with ID ${forumId} has been deleted.`);
+
+                } catch (error) {
+                    console.error("Error deleting forum post: ", error);
+                }
+            });
 
             replySubmit.addEventListener('click', function () { updateReply(replyInputs) });
 
@@ -572,6 +604,8 @@ window.onload = function () {
 
 
             const clonedForumDiv = forumDiv.cloneNode(true);
+
+
             clonedForumDiv.id = `cloned-forun-div-${forumData.currentUser}-${i}`;
             forumDiv.setAttribute("cloneRef", clonedForumDiv.id);
 
@@ -584,15 +618,13 @@ window.onload = function () {
             clonedForumDiv.querySelector('.reply-btn').addEventListener('click', function () {
                 clonedForumDiv.querySelector('.reply-container').style.display = 'block';
             });
+
             clonedForumDiv.querySelector('.reply-submit').addEventListener('click', function () { updateReply(clonedForumDiv.querySelector('.reply-input')) });
 
             forumLists[1].appendChild(clonedForumDiv);
 
-
-
             results.forEach((doc) => {
                 appendToReply(doc.data().reply, forumName, doc.data().currentUser);
-
 
             });
         };
@@ -609,36 +641,133 @@ window.onload = function () {
     /**
      * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
      */
-    async function appendToForum(doc, i) {
+    async function appendToForum(forumData, i) { // Change 'doc' to 'forumData'
         const forumLists = document.querySelectorAll('.forum-list'); // Get all forum containers
 
-        console.log(doc);
-        const forumData = doc;
+        console.log(forumData);
 
         // Create container for forum post
         const forumDiv = document.createElement('li');
         forumDiv.classList.add('forum-item');
 
+        // Forum text container 
+        const forumContainer = document.createElement('div');
+        forumContainer.classList.add('forum-container');
+
+        // inner forum text container 
+        const innerForum = document.createElement('div');
+        innerForum.classList.add('inner');
+
+        // reply text container 
+        const replyContainer = document.createElement('div');
+        replyContainer.classList.add('reply-container');
+        replyContainer.style.display = 'none'; // Initially hidden
+
+        // reply btn
+        const replyBtn = document.createElement('button');
+        replyBtn.textContent = 'Reply';
+        replyBtn.classList.add('reply-btn');
+
+        // Add delete section
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.classList.add('delete-btn');
+
         // Forum text
         const forumName = document.createElement('p');
-        forumName.textContent = forumData;
+        forumName.textContent = forumData.forum; // Use forumData.forum to display the actual forum text // Assuming forumData has a 'name' property
         forumName.classList.add('forum-post');
 
         // Display the user who created the forum post
         const currentUser = document.createElement('p');
-        currentUser.textContent = ` ${String(i).padStart(2, '0')}// ${userSignedIn}`;
+        currentUser.textContent = ` ${String(i).padStart(2, '0')} // ${userSignedIn}`;
         currentUser.classList.add('forum-creator');
 
-        // Append elements to forum container
-        forumDiv.appendChild(currentUser);
-        forumDiv.appendChild(forumName);
+        // Reply input field
+        const replyInputs = document.createElement('input');
+        replyInputs.type = 'text';
+        replyInputs.classList.add('reply-input');
 
-        // Append to ALL forum lists
-        forumLists.forEach(forumList => {
-            forumList.appendChild(forumDiv.cloneNode(true)); // Clone node to avoid moving it
+        // Reply submit button
+        const replySubmit = document.createElement('button');
+        replySubmit.classList.add('reply-submit');
+        replySubmit.textContent = 'Submit';
 
+        // Append elements
+        replyContainer.appendChild(replyInputs);
+        replyContainer.appendChild(replySubmit);
+        innerForum.appendChild(currentUser);
+        innerForum.appendChild(forumName);
+        forumContainer.appendChild(innerForum);
+        forumContainer.appendChild(replyBtn);
+        forumContainer.appendChild(delBtn); // Ensure the delete button is added here
+        forumDiv.appendChild(forumContainer);
+        forumDiv.appendChild(replyContainer);
+
+        // Add event listener for reply button
+        replyBtn.addEventListener('click', function () {
+            replyContainer.style.display = 'block';
         });
+
+        // Add event listener for delete button
+        //The updating cloned part was done with ChatGPT
+        delBtn.addEventListener('click', async function () {
+            try {
+                // Get the forum ID from the current document (forumDoc)
+                const forumId = forumData.id; // Now using forumDoc.id
+
+                // Get a reference to the document
+                const docRef = doc(db, "Forums", forumId);
+
+                // Delete the document from Firestore
+                await deleteDoc(docRef);
+
+                // Remove the forum item from both the original and cloned forum lists
+                forumLists[0].removeChild(forumDiv);
+
+                // Find the cloned forum by its ID
+                const clonedForumDivId = forumDiv.getAttribute("cloneRef");
+                const clonedForumDiv = document.getElementById(clonedForumDivId);
+
+                // Remove the cloned forum as well
+                if (clonedForumDiv) {
+                    forumLists[1].removeChild(clonedForumDiv);
+                }
+
+                console.log(`Forum post with ID ${forumId} has been deleted.`);
+
+            } catch (error) {
+                console.error("Error deleting forum post: ", error);
+            }
+        });
+
+
+        replySubmit.addEventListener('click', function () {
+            updateReply(replyInputs);
+        });
+
+        forumLists[0].appendChild(forumDiv);
+
+        const clonedForumDiv = forumDiv.cloneNode(true);
+
+        clonedForumDiv.id = `cloned-forun-div-${forumData.currentUser}-${i}`;
+        forumDiv.setAttribute("cloneRef", clonedForumDiv.id);
+
+        forumDiv.id = `orig-forun-div-${forumData.currentUser}-${i}`;
+        clonedForumDiv.setAttribute("origRef", forumDiv.id);
+
+        // Add event listener to the cloned reply button
+        clonedForumDiv.querySelector('.reply-btn').addEventListener('click', function () {
+            clonedForumDiv.querySelector('.reply-container').style.display = 'block';
+        });
+
+        clonedForumDiv.querySelector('.reply-submit').addEventListener('click', function () {
+            updateReply(clonedForumDiv.querySelector('.reply-input'));
+        });
+
+        forumLists[1].appendChild(clonedForumDiv);
     }
+
 
 
     //const forumPost = document.querySelector('.forumPost');
@@ -709,7 +838,7 @@ window.onload = function () {
 
         // Display the user who created the forum post
         const currentUser = document.createElement('p');
-        currentUser.textContent = `// ${userReplied}`;
+        currentUser.textContent = `${userReplied}`;
         currentUser.classList.add('reply-creator');
 
         // Append elements to forum container
@@ -720,7 +849,6 @@ window.onload = function () {
         let cloneReply = replyDiv.cloneNode(true);
         let refId = forumItem.getAttribute("cloneRef");
         if (refId === null) {
-            console.log("nnnn");
             let origId = forumItem.getAttribute("origRef");
 
             let replyContainer_clone = document.querySelector(`#${origId}`).querySelector('.reply-container');

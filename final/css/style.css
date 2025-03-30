@@ -253,6 +253,9 @@ img{
   overflow:scroll !important;
   max-height: 60vh;
 }
+.tor-pop-up .delete-btn{
+  display: none !important;
+}
 .login-pop-up .modal{
   background-color:blue;
   margin:0 auto;
