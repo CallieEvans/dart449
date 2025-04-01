@@ -1,0 +1,451 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+:root{
+  --dark:#144E59;
+}
+@font-face {
+  font-family: 'chicago';
+  src: url(../fonts/sysfont.woff);
+}
+@font-face {
+  font-family: 'ChicagoFLF';
+  src: url(../fonts/ChicagoFLF.ttf);
+}
+html{
+  font-size: calc(9px + 0.390625vw);
+}
+body{ 
+  font-family: 'ChicagoFLF';
+    color: white;
+    overflow: hidden !important;
+    max-height: 100vh;
+}
+a{
+  color: black;
+}
+main a{
+  color:white;
+}
+h1, h2, h3, h4{
+  font-family: "gridlite-pe-variable", sans-serif;
+  font-family: 'ChicagoFLF';
+}
+h2{
+  font-size: 4cm;
+      font-family: 'chicago';
+}
+h1{
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  line-height: 80%;
+    font-family: 'chicago';
+}
+h3{
+  font-size: 25px;
+}
+p{
+margin: .5em 0 1em 0;
+line-height: 140%;
+  
+}
+img{
+  max-width: 100%;
+}
+.screenshots{
+  margin-top: 2em;
+}
+header{
+  position: fixed;
+  width: 100%;
+  top:0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:.3em 30px;
+  font-size: 14px;
+  background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+    font-family: 'chicago';
+    border-bottom: 2px solid black;
+}
+.logo{
+  margin-right: 2em;
+}
+header ul{
+  display: flex;
+}
+header ul li{
+  list-style-type:none;
+}
+ 
+header ul li a{
+  padding: .3em 2em;
+  text-decoration: none;
+}
+header ul li a:hover{
+  background-color: black;
+  color: white;
+}
+main{
+  background-image: url('../img/desktop-bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  max-height: 100vh;
+  overflow: hidden;
+}
+.width{
+  max-width: 1200px;
+  margin:0 auto;
+  padding: 150px 30px;
+  min-height: 100vh;
+}
+.mobile-img{
+  display: flex;
+  flex: 1 auto;
+}
+.safari .safari-img, .tor .tor-img, .folder .folder-img, .trash{
+  max-width: 100px;
+}
+
+.safari{
+  position: absolute;
+  top:80%;
+  left:10vw;
+ display: block;
+  opacity: 1;
+   transition: 1s ease-out;
+     z-index: 1;
+}
+
+.tor{
+  position: absolute;
+  top:0%;
+  left:90vw;
+  display: block;
+   opacity: 1;
+  transition: 1s ease-out;
+    z-index: 1;
+}
+.folder{
+  position: absolute;
+  top:10%;
+  left:0vw;
+  display: block;
+  opacity: 1;
+  transition: 1s ease-out;
+  z-index: 0;
+  
+}
+
+/* .safari{
+  position: absolute;
+  top:40%;
+  left:20vw;
+  display: block;
+}
+
+.tor{
+  position: absolute;
+  top:20%;
+  left:80vw;
+  display: block;
+}
+.folder{
+  position: absolute;
+  top:20%;
+  left:10vw;
+  display: block;
+} */
+
+
+/* .safari::after{
+  content: ' ';
+  display: block;
+  border-radius: 50%;
+  background-color: black;
+  width: 50px;
+  height: 50px;
+} */
+
+.mobile-img img{
+  max-width: 50%;
+}
+img{
+  margin: .5em;
+}
+
+#video{
+  display: none;
+}
+/* .user-item:before{
+  content: " ";
+  display: inline-block;
+  background-image: url('../img/users-random/user-1.svg');
+  background-repeat: no-repeat;
+  background-size: 40px;
+  width: 55px;
+  height: 40px;
+} */
+
+/* Sign in styles */
+li.user-item{
+  display: flex;
+  justify-content: space-between;
+  pointer-events: auto !important;
+    align-items: center;
+  cursor: pointer;
+}
+li.user-item:hover, li.user-item:active{
+  background-color: rgba(239, 239, 239, .3);
+}
+li.user-item p{
+  padding: 15px;
+  margin:0;
+}
+.user-list{
+  max-height: 150px;
+  overflow-y:scroll;
+  border: 2px solid black;
+}
+
+.user-list::-webkit-scrollbar {
+    width: 20px; /* width of the vertical scrollbar */
+    height: 20px; /* height of the horizontal scrollbar */
+}
+
+.user-item p{
+display: block;
+  width: 100% !important;
+}
+.user-highlight{
+  color:Red !important;
+}
+.toggle-reply{
+  display: block !important;
+}
+.scroll-bar::-webkit-scrollbar-thumb {
+    background-color: gray; /* color of the scrollbar thumb */
+    border-radius: 0px; /* rounded corners for the thumb */
+           background-color: rgba(239, 239, 239, .8);
+     border-style: outset;
+    border-bottom-style: outset;
+    border-color: #fff;
+    border-bottom-color: rgb(255, 255, 255);
+      border-bottom: 2px solid black;
+    border-bottom-width: 2px;
+      border-width: 2px;
+  outline: 1px solid black;
+  margin: 2px;
+}
+
+
+.scroll-bar::-webkit-scrollbar-track {
+    background: #f1f1f1; /* color of the scrollbar track */
+    border-radius: 0px; /* rounded corners for the track */
+       background-color: rgba(239, 239, 239, .8);
+     border-style: outset;
+    border-bottom-style: outset;
+    border-color: #fff;
+    border-bottom-color: rgb(255, 255, 255);
+      border-bottom: 2px solid black;
+    border-bottom-width: 2px;
+      border-width: 2px;
+  outline: 1px solid black;
+}
+
+.scroll-bar::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* color of the thumb when hovered */
+    
+}
+
+/* For Firefox */
+.scroll-bar{
+    scrollbar-width: thick; /* width of the scrollbar */
+    scrollbar-color: darkgray #f1f1f1; /* thumb color and track color */
+
+}
+
+
+
+.safari-b-pop-up{
+  width:49.5%;
+  min-height: 100vh;
+  position: fixed;
+  top:0px;
+  left:4px;
+  align-items: center;
+  display: none;
+    z-index: 10;
+  
+}
+
+.tor-pop-up{
+  width:49.5%;
+  min-height: 100vh;
+  position: fixed;
+  top:0px;
+  right:4px;
+  align-items: center;
+  display: none;
+   z-index: 10;
+}
+.folder-pop-up{
+  width:50%;
+  min-height: 100vh;
+  position: fixed;
+  top:0px;
+  right:4px;
+  align-items: center;
+  display: none;
+}
+.safari, .tor, .folder {
+  transition: top 1.5s ease-in-out, left 1.5s ease-in-out;
+}
+.icon-text{
+  text-align: center;
+  color:black;
+}
+
+.safari-b-pop-up .safari-modal{
+  margin:0 auto;
+  max-width: 800px;
+  width:100%;
+  padding: 4em;
+    background-color: #EFEFEF;
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+  min-height: 91vh;
+  color:#0400F1;
+}
+ .tor-pop-up .tor-modal{
+  margin:0 auto;
+  max-width: 800px;
+  width:100%;
+  padding: 4em;
+    background-color: #0400F1;
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+  min-height: 91vh;
+  color:#EFEFEF;
+}
+
+ .folder-pop-up .folder-modal{
+  margin:0 auto;
+  max-width: 800px;
+  width:100%;
+  padding: 4em;
+    background-color: #0400F1;
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+  min-height: 91vh;
+  color:#EFEFEF;
+}
+
+.login-pop-up{
+  width:100%;
+  min-height: 100vh;
+ background: url('../img/desktop-bg.png'), rgba(248, 248, 248, 0.85);
+ background-size: cover;
+ background-repeat: no-repeat;
+  position: fixed;
+  top:30px;
+  left: 0px;
+    display: flex;
+  align-items: center;
+}
+.forum-title{
+  display: flex;
+  justify-content: space-between;
+}
+.forum-item .forum-container .inner{
+  display: flex;
+  justify-content: space-between;
+}
+.tor-modal, .folder-modal, .safari-modal{
+  overflow-y:scroll !important;
+  max-height: 60vh;
+}
+.tor-pop-up .delete-btn{
+  display: none !important;
+}
+.login-conf{
+  display: none;
+}
+.ip{
+  display: flex;
+}
+.login-pop-up .modal{
+  background-color:blue;
+  margin:0 auto;
+  max-width: 600px;
+  padding: 4em;
+    background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 5px solid black;
+  border-width: 5px;
+  outline: 2px solid black;
+}
+
+.create-acc{
+  display: none;
+}
+.reply-container{
+  display: none;
+}
+
+footer{
+    position: fixed;
+
+ bottom:0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 14px;
+  background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+    font-family: 'chicago';
+    border-bottom: 2px solid black;
+}
+.footnotes{
+  margin-top: 2em;
+}
+.footnotes p{
+  font-size: 12px;
+}
+footer p{
+   background-color: rgba(239, 239, 239, .8);
+  color: black;
+  border-style: outset;
+  border-color: #fff;
+  font-family: 'chicago';
+  border-bottom: 2px solid black;
+outline: 1px solid black;
+margin: 0;
+}
