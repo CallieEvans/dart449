@@ -102,7 +102,7 @@ window.onload = function () {
         let confirm = document.querySelector('.login-conf');
         let user = currentUser.value;
 
-        let userIcon = document.querySelectorAll('.user-icon');
+        let userIcon = document.querySelector('.user-icon');
         const images = ['img/users-random/user-1.svg', 'img/users-random/user-2.svg', 'img/users-random/user-3.svg'];
 
         let randomImgNum = Math.floor(Math.random() * images.length);
@@ -117,7 +117,10 @@ window.onload = function () {
 
         if (user != null) {
             confirm.style.display = 'block';
+            //userIcon.array.forEach(element => {
             userIcon.src = images[randomImgNum];
+            //});
+
         }
 
     };
@@ -295,9 +298,9 @@ window.onload = function () {
             const userDiv = document.createElement('li');
             userDiv.classList.add('user-item'); // Add a class for styling
 
-            // Create user icon
+            //Create user icon
             const userIcon = document.createElement('img');
-            userIcon.setAttribute('src', 'img/users-random/user-1.svg');
+            userIcon.src = 'img/users-random/user-1.svg';
             userIcon.classList.add('user-icon'); // Add dynamic class for user
 
             // Create user name (p element)
@@ -364,7 +367,7 @@ window.onload = function () {
 
         // Create user icon
         const userIcon = document.createElement('img');
-        userIcon.setAttribute('src', 'img/users-random/user-1.svg');
+        userIcon.src = 'img/users-random/user-1.svg';
         userIcon.classList.add('user-icon'); // Add dynamic class for user
 
         // Create user name (p element)
@@ -383,7 +386,7 @@ window.onload = function () {
         // Append user name and password input to the user container
         userDiv.appendChild(userIcon);
         userDiv.appendChild(userName);
-        //userDiv.appendChild(passInput);
+        // userDiv.appendChild(passInput);
         userList.appendChild(userDiv);
 
         // = userDiv.querySelector('.user-sign-in');
