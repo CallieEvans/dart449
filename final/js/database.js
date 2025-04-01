@@ -103,7 +103,7 @@ window.onload = function () {
         let user = currentUser.value;
 
         let userIcon = document.querySelectorAll('.user-icon');
-        const images = ['../img/users-random/user-1.svg', '../img/users-random/user-2.svg', '../img/users-random/user-3.svg'];
+        const images = ['img/users-random/user-1.svg', 'img/users-random/user-2.svg', 'img/users-random/user-3.svg'];
 
         let randomImgNum = Math.floor(Math.random() * images.length);
         // let pass = currentPass.value;
@@ -297,7 +297,7 @@ window.onload = function () {
 
             // Create user icon
             const userIcon = document.createElement('img');
-            userIcon.setAttribute('src', '../img/users-random/user-1.svg');
+            userIcon.setAttribute('src', 'img/users-random/user-1.svg');
             userIcon.classList.add('user-icon'); // Add dynamic class for user
 
             // Create user name (p element)
@@ -364,7 +364,7 @@ window.onload = function () {
 
         // Create user icon
         const userIcon = document.createElement('img');
-        userIcon.setAttribute('src', '../img/users-random/user-1.svg');
+        userIcon.setAttribute('src', 'img/users-random/user-1.svg');
         userIcon.classList.add('user-icon'); // Add dynamic class for user
 
         // Create user name (p element)
