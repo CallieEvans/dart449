@@ -197,6 +197,18 @@ main{
   padding: 2px 4px;
   color: black;
 }
+.safari-close, .tor-close{
+       border-style: inset;
+    border-bottom-style: inset;
+    background-color: #B4B3BE;
+    color: transparent;
+}
+.b-nav-con{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
 .login-pop-up button:hover, .forum-sub-tor:hover, .reply-submit:hover, .forum-sub:hover, .safari-close:hover, .tor-close:hover{
    background-color: #9995E1;
 }
@@ -367,13 +379,14 @@ display: block;
 
 .tor-pop-up{
   width:49.5%;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   position: fixed;
-  top:0px;
+top: 32px;
   right:4px;
-  align-items: center;
+  align-items: end;
   display: none;
    z-index: 10;
+   flex-direction: column;
 }
 .folder-pop-up{
   width:50%;
@@ -409,12 +422,23 @@ display: block;
   color:#0400F1;
 }
  .tor-pop-up .tor-modal{
-  margin:0 auto;
-  max-width: 800px;
-  width:100%;
-  padding: 4em;
-    background-color: #0400F1;
+  color:#EFEFEF;
+      width:100%;
+        padding: 2em;
   color: black;
+  border-style: inset;
+  border-color: #606060;
+  font-family: 'chicago';
+  border-bottom: 2px solid black;
+  border-width: 2px;
+  outline: 1px solid black;
+  min-height: 85vh;
+  background-color: #0400F1;
+}
+
+.tor-pop-up{
+  padding: 6px;
+  color: white;
   border-style: outset;
   border-color: #fff;
   font-family: 'chicago';
@@ -422,9 +446,12 @@ display: block;
   border-width: 5px;
   outline: 2px solid black;
   min-height: 91vh;
-  color:#EFEFEF;
+  background-color: rgba(221,221,221, .8) !important;
+  
 }
-
+.tor-pop-up .forum-list li{
+   color: white;
+}
  .folder-pop-up .folder-modal{
   margin:0 auto;
   max-width: 800px;
