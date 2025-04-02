@@ -204,7 +204,6 @@ window.onload = function () {
                     loginPopup.style.display = 'none';
                     triggerForum();
                     fetchUserData(userSignedIn);  // Fetch and display icon after login
-                    retrieveImage(userSignedIn);
                 });
             });
         });
@@ -212,7 +211,7 @@ window.onload = function () {
 
 
     async function appendToUser(doc, icon) {
-        // const userData = doc;
+        const userData = doc;
         const loginPopup = document.querySelector('.login-pop-up');
         const userList = document.querySelector('.user-list'); // Get the container
 
@@ -250,9 +249,8 @@ window.onload = function () {
             //currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
 
             // Directly update userSignedIn here
-            userSignedIn = doc;  // Update signed-in user
+            userSignedIn = doc;  // This should correctly assign the signed-in user to the global variable
             console.log(`Welcome ${userSignedIn}`);
-            userName.classList.toggle('user-highlight');
 
 
 
@@ -265,9 +263,8 @@ window.onload = function () {
                 //     console.log('Incorrect password');
                 // }
                 loginPopup.style.display = 'none';
-                triggerForum();
-                fetchUserData(userSignedIn);  // Fetch and display icon after login
                 retrieveImage(userSignedIn);
+                triggerForum();
 
 
             });
@@ -461,8 +458,7 @@ window.onload = function () {
             replyContainer.classList.add('reply-container');
             replyContainer.style.display = 'none'; // Initially hidden
 
-            const commentCon = document.createElement('div');
-            commentCon.classList.add('comment-container');
+
             // reply btn
             const replyBtn = document.createElement('button'); // Changed from 'btn' to 'button'
             replyBtn.textContent = 'Reply';
@@ -472,7 +468,6 @@ window.onload = function () {
             const delBtn = document.createElement('button'); // Changed from 'btn' to 'button'
             delBtn.textContent = 'Delete';
             delBtn.classList.add('delete-btn');
-
 
             //Add comments section
             let comI = results.size; // Count the number of replies
@@ -492,13 +487,9 @@ window.onload = function () {
             currentUser.textContent = ` ${String(i).padStart(2, '0')} // ${forumData.currentUser}`;
             currentUser.classList.add('forum-creator');
 
-            const inputContain = document.createElement('div');
-            inputContain.classList.add('input-con');
-
             // Reply input field
             const replyInputs = document.createElement('input');
             replyInputs.type = 'text';
-            replyInputs.placeholder = 'Write your reply';
             replyInputs.classList.add('reply-input');
 
             // Reply submit button
@@ -508,16 +499,14 @@ window.onload = function () {
 
 
             // Append elements
-            inputContain.appendChild(replyInputs);
-            inputContain.appendChild(replySubmit);
-            replyContainer.appendChild(inputContain);
+            replyContainer.appendChild(replyInputs);
+            replyContainer.appendChild(replySubmit);
             innerForum.appendChild(currentUser);
             innerForum.appendChild(forumName);
             forumContainer.appendChild(innerForum);
             forumContainer.appendChild(comments);
-            commentCon.appendChild(replyBtn);
-            commentCon.appendChild(delBtn);
-            forumContainer.appendChild(commentCon);
+            forumContainer.appendChild(replyBtn);
+            forumContainer.appendChild(delBtn);
             forumDiv.appendChild(forumContainer);
             forumDiv.appendChild(replyContainer);
 
@@ -824,19 +813,14 @@ window.onload = function () {
         replyName.textContent = replyData;
         replyName.classList.add('reply-post');
 
-        const replySymb = document.createElement('p');
-        replySymb.textContent = '//';
-        replySymb.classList.add('reply-symbol');
-
         // Display the user who created the forum post
         const currentUser = document.createElement('p');
         currentUser.textContent = `${userReplied}`;
         currentUser.classList.add('reply-creator');
 
         // Append elements to forum container
-        replyDiv.appendChild(replyName);
-        replyDiv.appendChild(replySymb);
         replyDiv.appendChild(currentUser);
+        replyDiv.appendChild(replyName);
         replyContainer.appendChild(replyDiv);
 
         let cloneReply = replyDiv.cloneNode(true);

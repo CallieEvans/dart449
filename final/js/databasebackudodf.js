@@ -73,63 +73,71 @@ window.onload = function () {
      * Add user function
      */
     //Await has to be combine with async, to issue the js knows to wait
-    async function addUser(user, icon) {
+    async function addUser(user) {
+        //Try = try to call the collection, Await tells to wait until the docs are found
         try {
-            const usersRef = collection(db, "Users");
+            //add a document to our collection of users
+            // const docRef = await addDoc(collection(db, "Users"), {
+            //     //The different fields
+            //     user: user,
+            //     pass: pass
+            // });
+            const usersRef = collection(db, 'Users');
             const docRef = doc(usersRef, user);
-
             await setDoc(docRef, {
-                user: user,
-                icon: icon
+                user: user
             });
-
             console.log("Document written with ID: ", docRef.id);
+            // Catch = to log the error  or 'catch' it so it doesnt break code
         } catch (e) {
             console.error("Error adding document: ", e);
         }
     }
-    //const user = userSignedIn;  // Replace this with the actual user or get it dynamically
-    //fetchUserData();
 
 
     /**
  * Update the user name & password
  */
-    async function updateUser() {
+    function updateUser() {
         let confirm = document.querySelector('.login-conf');
         let user = currentUser.value;
 
+        let userIcon = document.querySelector('.user-icon');
         const images = ['img/users-random/user-1.svg', 'img/users-random/user-2.svg', 'img/users-random/user-3.svg'];
-        let randomImgNum = Math.floor(Math.random() * images.length);
-        let icon = images[randomImgNum];
 
-        startWebcam(user, icon);
-        appendToUser(user, icon);
+        let randomImgNum = Math.floor(Math.random() * images.length);
+        // let pass = currentPass.value;
+        // userNameDisplay.textContent = user;
+        // userPassDisplay.textContent = pass;
+
+        //Calling from database.js
+        startWebcam(user);
+        appendToUser(user);
+
 
         if (user != null) {
             confirm.style.display = 'block';
+            //userIcon.array.forEach(element => {
+            userIcon.src = images[randomImgNum];
+            //});
+
         }
 
-        // Add user icon to Firebase
-        await addUser(user, icon);  // Save to Firebase
-        fetchUserData(user);  // Fetch the updated icon and display it
-    }
-
-
+    };
 
     btn.addEventListener('click', updateUser);
 
     /**
  * Start the webcam and streama video , came partly from Chatgpt
  */
-    async function startWebcam(user, icon) {
+    async function startWebcam(user) {
         //Check and log errors? (try and catch)
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             video.srcObject = stream;
 
             video.onloadedmetadata = () => {
-                setTimeout(() => takePhoto(user, icon), 500);
+                setTimeout(() => takePhoto(user), 500);
             };
         } catch (error) {
             console.error("Error accessing webcam:", error);
@@ -139,7 +147,7 @@ window.onload = function () {
     /**
  * take photo of user and upload the the database
  */
-    function takePhoto(user, icon) {
+    function takePhoto(user) {
         const context = canvas.getContext('2d');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
@@ -153,159 +161,12 @@ window.onload = function () {
             // 'file' comes from the Blob or File API
             uploadBytes(storageRef, blob).then((snapshot) => {
                 console.log('Uploaded a blob or file!');
-                addUser(user, icon);
+                addUser(user);
             });
 
         });
         //photo.style.display = 'block';
     }
-
-    /**
-   * Update the user name & password
-   */
-
-    async function triggerUser() {
-        const usersRef = collection(db, "Users"); // Reference to the "Users" collection
-        const userLoginList = await getDocs(usersRef); // Fetch all documents
-
-        const userList = document.querySelector('.user-list'); // Get the container
-        userList.innerHTML = ''; // Clear previous users
-
-        // Loop through each user in the database
-        userLoginList.forEach((doc) => {
-            const userData = doc.data();
-            const loginPopup = document.querySelector('.login-pop-up');
-
-            // Create the HTML elements dynamically
-            const userDiv = document.createElement('li');
-            userDiv.classList.add('user-item'); // Add a class for styling
-
-            // Create user icon (initially set to placeholder)
-            const userIcon = document.createElement('img');
-            userIcon.src = userData.icon; // Use a default icon if none is found
-            userIcon.classList.add('user-icon'); // Add dynamic class for user
-
-            // Create user name (p element)
-            const userName = document.createElement('p');
-            userName.textContent = userData.user;
-            userName.classList.add(userData.user.trim().replace(/\s+/g, '-')); // Add dynamic class for user
-
-            // Append user name and password input to the user container
-            userDiv.appendChild(userIcon);
-            userDiv.appendChild(userName);
-            userList.appendChild(userDiv);
-
-            userName.addEventListener('click', function () {
-                userSignedIn = userData.user;  // Update signed-in user
-                console.log(`Welcome ${userSignedIn}`);
-                userName.classList.toggle('user-highlight');
-
-                loginBtn.addEventListener('click', function () {
-                    loginPopup.style.display = 'none';
-                    triggerForum();
-                    fetchUserData(userSignedIn);  // Fetch and display icon after login
-                    retrieveImage(userSignedIn);
-                });
-            });
-        });
-    }
-
-
-    async function appendToUser(doc, icon) {
-        // const userData = doc;
-        const loginPopup = document.querySelector('.login-pop-up');
-        const userList = document.querySelector('.user-list'); // Get the container
-
-        // Create the HTML elements dynamically
-        const userDiv = document.createElement('li');
-        userDiv.classList.add('user-item'); // Add a class for styling
-
-        const userIcon = document.createElement('img');
-        userIcon.src = icon;
-        userIcon.classList.add('user-icon'); // Add dynamic class for user
-
-        // Create user name (p element)
-        const userName = document.createElement('p');
-        userName.textContent = doc;
-        //ai for the replace function
-        userName.classList.add(doc.trim().replace(/\s+/g, '-')); // Add dynamic class for user
-
-        // Create password input (initially hidden)
-        // const passInput = document.createElement('input');
-        // passInput.type = 'text';
-        // passInput.classList.add(doc.trim().replace(/\s+/g, '-'), 'user-sign-in');
-        // passInput.placeholder = 'Enter password';
-        // passInput.style.display = 'none'; // Hide by default
-
-        // Append user name and password input to the user container
-        userDiv.appendChild(userIcon);
-        userDiv.appendChild(userName);
-        // userDiv.appendChild(passInput);
-        userList.appendChild(userDiv);
-
-
-        // = userDiv.querySelector('.user-sign-in');
-
-        userName.addEventListener('click', function () {
-            //currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
-
-            // Directly update userSignedIn here
-            userSignedIn = doc;  // Update signed-in user
-            console.log(`Welcome ${userSignedIn}`);
-            userName.classList.toggle('user-highlight');
-
-
-
-            // Trigger any further actions (like showing password input, etc.)
-            loginBtn.addEventListener('click', function () {
-                // if (currentInput.value === userData.pass) {
-                //     userSignedIn = userData.user;  // Update again if necessary
-                //     console.log(`${userData.user} signed in successfully`);
-                // } else {
-                //     console.log('Incorrect password');
-                // }
-                loginPopup.style.display = 'none';
-                triggerForum();
-                fetchUserData(userSignedIn);  // Fetch and display icon after login
-                retrieveImage(userSignedIn);
-
-
-            });
-        });
-    }
-
-    triggerUser(); // Call the function to initialize the functionality
-
-    // Fetch user data (including the icon) before the user logs in
-    async function fetchUserData(user) {
-        const usersRef = collection(db, "Users");
-        const docRef = doc(usersRef, user);
-
-        try {
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                const userData = docSnap.data();
-                const userIcon = userData.icon;
-                console.log('User Icon:', userIcon);
-                // Update the user icon on the page
-                updateUserIcon(userIcon);
-            } else {
-                console.log("No such user!");
-            }
-        } catch (e) {
-            console.error("Error fetching user data: ", e);
-        }
-    }
-
-    // Update the user icon in the frontend
-    function updateUserIcon(icon) {
-        const userIconElement = document.querySelector('.user-icon'); // Make sure the selector matches your actual HTML
-        if (userIconElement) {
-            userIconElement.src = icon;
-        }
-    }
-
 
     async function retrieveImage(userSignedIn) {
 
@@ -416,7 +277,145 @@ window.onload = function () {
 
     btnForumTor.addEventListener('click', updateforumTor);
 
+    /**
+    * Update the user name & password
+    */
 
+    async function triggerUser() {
+        const usersRef = collection(db, "Users"); // Reference to the "Users" collection
+        const userLoginList = await getDocs(usersRef); // Fetch all documents
+
+        const userList = document.querySelector('.user-list'); // Get the container
+        userList.innerHTML = ''; // Clear previous users
+
+        //ChatGPT
+        // Loop through each user in the database
+        userLoginList.forEach((doc) => {
+            const userData = doc.data();
+            const loginPopup = document.querySelector('.login-pop-up');
+
+            // Create the HTML elements dynamically
+            const userDiv = document.createElement('li');
+            userDiv.classList.add('user-item'); // Add a class for styling
+
+            //Create user icon
+            const userIcon = document.createElement('img');
+            userIcon.src = 'img/users-random/user-1.svg';
+            userIcon.classList.add('user-icon'); // Add dynamic class for user
+
+            // Create user name (p element)
+            const userName = document.createElement('p');
+            userName.textContent = userData.user;
+            //ai for the replace function
+            userName.classList.add(userData.user.trim().replace(/\s+/g, '-')); // Add dynamic class for user
+
+            // Create password input (initially hidden)
+            // const passInput = document.createElement('input');
+            // passInput.type = 'text';
+            // passInput.classList.add(userData.user.trim().replace(/\s+/g, '-'), 'user-sign-in');
+            // passInput.placeholder = 'Enter password';
+            // passInput.style.display = 'none'; // Hide by default
+
+            // Append user name and password input to the user container
+            userDiv.appendChild(userIcon);
+            userDiv.appendChild(userName);
+            //userDiv.appendChild(passInput);
+            userList.appendChild(userDiv);
+
+            //const currentInput = userDiv.querySelector('.user-sign-in');
+            // Add event listener to the user name
+            userName.addEventListener('click', function () {
+                //currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
+
+                // Directly update userSignedIn here
+                userSignedIn = userData.user;  // This should correctly assign the signed-in user to the global variable
+                console.log(`Welcome ${userSignedIn}`);
+
+
+                userName.classList.toggle('user-highlight');
+
+
+                // Trigger any further actions (like showing password input, etc.)
+                loginBtn.addEventListener('click', function () {
+                    // if (currentInput.value === userData.pass) {
+                    //     userSignedIn = userData.user;  // Update again if necessary
+                    //     console.log(`${userData.user} signed in successfully`);
+                    // } else {
+                    //     console.log('Incorrect password');
+                    // }
+                    loginPopup.style.display = 'none';
+                    //getUser(userSignedIn);
+                    retrieveImage(userSignedIn);
+                    triggerForum();
+
+                });
+            });
+
+        });
+    }
+
+
+
+    async function appendToUser(doc) {
+        const userData = doc;
+        const loginPopup = document.querySelector('.login-pop-up');
+        const userList = document.querySelector('.user-list'); // Get the container
+
+        // Create the HTML elements dynamically
+        const userDiv = document.createElement('li');
+        userDiv.classList.add('user-item'); // Add a class for styling
+
+        // Create user icon
+        const userIcon = document.createElement('img');
+        userIcon.src = 'img/users-random/user-1.svg';
+        userIcon.classList.add('user-icon'); // Add dynamic class for user
+
+        // Create user name (p element)
+        const userName = document.createElement('p');
+        userName.textContent = doc;
+        //ai for the replace function
+        userName.classList.add(doc.trim().replace(/\s+/g, '-')); // Add dynamic class for user
+
+        // Create password input (initially hidden)
+        // const passInput = document.createElement('input');
+        // passInput.type = 'text';
+        // passInput.classList.add(doc.trim().replace(/\s+/g, '-'), 'user-sign-in');
+        // passInput.placeholder = 'Enter password';
+        // passInput.style.display = 'none'; // Hide by default
+
+        // Append user name and password input to the user container
+        userDiv.appendChild(userIcon);
+        userDiv.appendChild(userName);
+        // userDiv.appendChild(passInput);
+        userList.appendChild(userDiv);
+
+        // = userDiv.querySelector('.user-sign-in');
+
+        userName.addEventListener('click', function () {
+            //currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
+
+            // Directly update userSignedIn here
+            userSignedIn = doc;  // This should correctly assign the signed-in user to the global variable
+            console.log(`Welcome ${userSignedIn}`);
+
+
+
+            // Trigger any further actions (like showing password input, etc.)
+            loginBtn.addEventListener('click', function () {
+                // if (currentInput.value === userData.pass) {
+                //     userSignedIn = userData.user;  // Update again if necessary
+                //     console.log(`${userData.user} signed in successfully`);
+                // } else {
+                //     console.log('Incorrect password');
+                // }
+                loginPopup.style.display = 'none';
+                triggerForum();
+
+            });
+        });
+    }
+
+    triggerUser(); // Call the function to initialize the functionality
 
     /**
     * Update the forum entry
@@ -461,8 +460,7 @@ window.onload = function () {
             replyContainer.classList.add('reply-container');
             replyContainer.style.display = 'none'; // Initially hidden
 
-            const commentCon = document.createElement('div');
-            commentCon.classList.add('comment-container');
+
             // reply btn
             const replyBtn = document.createElement('button'); // Changed from 'btn' to 'button'
             replyBtn.textContent = 'Reply';
@@ -472,7 +470,6 @@ window.onload = function () {
             const delBtn = document.createElement('button'); // Changed from 'btn' to 'button'
             delBtn.textContent = 'Delete';
             delBtn.classList.add('delete-btn');
-
 
             //Add comments section
             let comI = results.size; // Count the number of replies
@@ -492,13 +489,9 @@ window.onload = function () {
             currentUser.textContent = ` ${String(i).padStart(2, '0')} // ${forumData.currentUser}`;
             currentUser.classList.add('forum-creator');
 
-            const inputContain = document.createElement('div');
-            inputContain.classList.add('input-con');
-
             // Reply input field
             const replyInputs = document.createElement('input');
             replyInputs.type = 'text';
-            replyInputs.placeholder = 'Write your reply';
             replyInputs.classList.add('reply-input');
 
             // Reply submit button
@@ -508,16 +501,14 @@ window.onload = function () {
 
 
             // Append elements
-            inputContain.appendChild(replyInputs);
-            inputContain.appendChild(replySubmit);
-            replyContainer.appendChild(inputContain);
+            replyContainer.appendChild(replyInputs);
+            replyContainer.appendChild(replySubmit);
             innerForum.appendChild(currentUser);
             innerForum.appendChild(forumName);
             forumContainer.appendChild(innerForum);
             forumContainer.appendChild(comments);
-            commentCon.appendChild(replyBtn);
-            commentCon.appendChild(delBtn);
-            forumContainer.appendChild(commentCon);
+            forumContainer.appendChild(replyBtn);
+            forumContainer.appendChild(delBtn);
             forumDiv.appendChild(forumContainer);
             forumDiv.appendChild(replyContainer);
 
@@ -824,19 +815,14 @@ window.onload = function () {
         replyName.textContent = replyData;
         replyName.classList.add('reply-post');
 
-        const replySymb = document.createElement('p');
-        replySymb.textContent = '//';
-        replySymb.classList.add('reply-symbol');
-
         // Display the user who created the forum post
         const currentUser = document.createElement('p');
         currentUser.textContent = `${userReplied}`;
         currentUser.classList.add('reply-creator');
 
         // Append elements to forum container
-        replyDiv.appendChild(replyName);
-        replyDiv.appendChild(replySymb);
         replyDiv.appendChild(currentUser);
+        replyDiv.appendChild(replyName);
         replyContainer.appendChild(replyDiv);
 
         let cloneReply = replyDiv.cloneNode(true);
