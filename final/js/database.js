@@ -203,7 +203,7 @@ window.onload = function () {
                 loginBtn.addEventListener('click', function () {
                     loginPopup.style.display = 'none';
                     // triggerForum();
-                    //fetchUserData(userSignedIn);  // Fetch and display icon after login
+                    fetchUserData(userSignedIn);  // Fetch and display icon after login
                 });
             });
         });
