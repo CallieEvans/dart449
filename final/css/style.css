@@ -265,9 +265,38 @@ li.user-item p{
 }
 .forum-list{
   list-style-type: none;
+  margin-top: 2em;
 }
 
+.tor-pop-up .forum-item:after{
+  content: " ";
+  width: 100%;
+  height: 15px;
+  display: block;
+  background-image: url('../img/separator.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: .5em 0 1.5em 0;
+}
+.safari-b-pop-up .forum-item:after{
+  content: " ";
+  width: 100%;
+  height: 15px;
+  display: block;
+  background-image: url('../img/separator-blue.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0 0 1em 0;
+}
+.forum-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
+.forum-post{
+  max-width: 70%;
+}
 .user-item p{
 display: block;
   width: 100% !important;
@@ -278,8 +307,22 @@ display: block;
 .reply-item{
   order:1;
 }
-.input-con {
+.reply-btn{
+  margin-left: auto;
+}
+.delete-btn:before{
+  content: "//";
+  margin: 0 6px;
+}
+
+.reply-input {
   order: 2;
+}
+.reply-submit {
+  order: 3;
+}
+.reply-container{
+  font-size: 10px;
 }
 .reply-input{
   width: 100%;
@@ -489,6 +532,7 @@ top: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 .reply-item{
     display: flex;

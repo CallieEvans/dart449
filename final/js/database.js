@@ -820,8 +820,8 @@ window.onload = function () {
         currentUser.classList.add('reply-creator');
 
         // Append elements to forum container
-        replyDiv.appendChild(currentUser);
         replyDiv.appendChild(replyName);
+        replyDiv.appendChild(currentUser);
         replyContainer.appendChild(replyDiv);
 
         let cloneReply = replyDiv.cloneNode(true);
