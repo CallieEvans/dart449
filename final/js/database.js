@@ -203,6 +203,7 @@ window.onload = function () {
                 loginBtn.addEventListener('click', function () {
                     loginPopup.style.display = 'none';
                     // triggerForum();
+                    retrieveImage(userSignedIn)
                     fetchUserData(userSignedIn);  // Fetch and display icon after login
                 });
             });
@@ -286,7 +287,7 @@ window.onload = function () {
                 const userIcon = userData.icon;
                 console.log('User Icon:', userIcon);
                 // Update the user icon on the page
-                updateUserIcon(userIcon);
+                // updateUserIcon(userIcon);
             } else {
                 console.log("No such user!");
             }
@@ -296,12 +297,12 @@ window.onload = function () {
     }
 
     // Update the user icon in the frontend
-    function updateUserIcon(icon) {
-        const userIconElement = document.querySelector('.user-icon'); // Make sure the selector matches your actual HTML
-        if (userIconElement) {
-            userIconElement.src = icon;
-        }
-    }
+    // function updateUserIcon(icon) {
+    //     const userIconElement = document.querySelector('.user-icon'); // Make sure the selector matches your actual HTML
+    //     if (userIconElement) {
+    //         userIconElement.src = icon;
+    //     }
+    // }
 
 
     async function retrieveImage(userSignedIn) {
