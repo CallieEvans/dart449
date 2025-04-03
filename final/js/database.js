@@ -183,37 +183,52 @@ window.onload = function () {
             // Create user icon (initially set to placeholder)
             const userIcon = document.createElement('img');
             userIcon.src = userData.icon; // Use a default icon if none is found
-            userIcon.classList.add('user-icon'); // Add dynamic class for user
+            userIcon.classList.add('user-icon');
+            // Add dynamic class for user
 
             // Create user name (p element)
             const userName = document.createElement('p');
             userName.textContent = userData.user;
             userName.classList.add(userData.user.trim().replace(/\s+/g, '-')); // Add dynamic class for user
-
             // Append user name and password input to the user container
             userDiv.appendChild(userIcon);
             userDiv.appendChild(userName);
             userList.appendChild(userDiv);
 
             userName.addEventListener('click', function () {
-                userSignedIn = userData.user;  // Update signed-in user
+                userSignedIn = userData.user;
+                // Update signed-in user
                 console.log(`Welcome ${userSignedIn}`);
                 userName.classList.toggle('user-highlight');
 
-                loginBtn.addEventListener('click', function () {
-                    loginPopup.style.display = 'none';
-                    // triggerForum();
-                    retrieveImage(userSignedIn)
-                    fetchUserData(userSignedIn);  // Fetch and display icon after login
-                });
             });
+
         });
     }
+    /**
+     * Calling the login popup here so it doesnt trigger our forum , Timeout is from chatgpt
+     *  */
+    const loginPopup = document.querySelector('.login-pop-up');
+    loginBtn.addEventListener('click', function () {
+        if (!userSignedIn) {
+            console.log('No user selected.');
+            return; // Prevent proceeding if no user is selected
+        }
+
+        loginPopup.style.display = 'none';
+        retrieveImage(userSignedIn);
+        fetchUserData(userSignedIn);
+
+        // Delay triggerForum to ensure data is set
+        setTimeout(() => {
+            triggerForum(userSignedIn);
+        }, 500);
+    });
 
 
     async function appendToUser(doc, icon) {
-        const userData = doc;
-        const loginPopup = document.querySelector('.login-pop-up');
+        // const userData = doc;
+        // const loginPopup = document.querySelector('.login-pop-up');
         const userList = document.querySelector('.user-list'); // Get the container
 
         // Create the HTML elements dynamically
@@ -250,25 +265,24 @@ window.onload = function () {
             //currentInput.style.display = currentInput.style.display === 'none' ? 'block' : 'none';
 
             // Directly update userSignedIn here
-            userSignedIn = doc;  // This should correctly assign the signed-in user to the global variable
-            console.log(`Welcome ${userSignedIn}`);
+            userSignedIn = doc;
+
+            // // Trigger any further actions (like showing password input, etc.)
+            // loginBtn.addEventListener('click', function () {
+            //     // if (currentInput.value === userData.pass) {
+            //     //     userSignedIn = userData.user;  // Update again if necessary
+            //     //     console.log(`${userData.user} signed in successfully`);
+            //     // } else {
+            //     //     console.log('Incorrect password');
+            //     // }
+            //     //userSignedIn = doc;  // This should correctly assign the signed-in user to the global variable
+            //     console.log(`Welcome ${userSignedIn}`);
+            //     loginPopup.style.display = 'none';
+            //     retrieveImage(userSignedIn);
+            //     // triggerForum();
 
 
-
-            // Trigger any further actions (like showing password input, etc.)
-            loginBtn.addEventListener('click', function () {
-                // if (currentInput.value === userData.pass) {
-                //     userSignedIn = userData.user;  // Update again if necessary
-                //     console.log(`${userData.user} signed in successfully`);
-                // } else {
-                //     console.log('Incorrect password');
-                // }
-                loginPopup.style.display = 'none';
-                retrieveImage(userSignedIn);
-                // triggerForum();
-
-
-            });
+            // });
         });
     }
 
@@ -362,8 +376,10 @@ window.onload = function () {
                 forum: forum,
                 currentUser: userSignedIn // Associate with signed-in user
             });
+            triggerForum(userSignedIn);
 
             console.log("Forum written with ID: ", docRef.id);
+
 
             // Now pass the forum data object, including the document ID
             const forumData = {
@@ -373,7 +389,8 @@ window.onload = function () {
             };
 
             // Pass the forumData object to appendToForum
-            appendToForum(forumData, i);
+            appendToForum(forumData, i, 0);
+
         } catch (e) {
             console.error("Error adding forum: ", e);
         }
@@ -420,7 +437,7 @@ window.onload = function () {
     * Update the forum entry
     */
 
-    async function triggerForum() {
+    async function triggerForum(user) {
         const forumsRef = collection(db, "Forums"); // Reference to the "forums" collection
         const forumLoginList = await getDocs(forumsRef); // Fetch all documents
 
@@ -513,8 +530,11 @@ window.onload = function () {
 
             // Update welcome message
             const welcomeUser = document.querySelectorAll('.welcome-user');
+            //userSignedIn = forumDoc.data().currentUser;
+            //console.log(userSignedIn);
             welcomeUser.forEach(element => {
-                element.textContent = `Welcome ${userSignedIn}`;
+                element.textContent = `Welcome ${user}`;
+
             });
 
             // Add event listener for reply button
@@ -533,6 +553,7 @@ window.onload = function () {
 
                     // Delete the document from Firestore
                     await deleteDoc(docRef);
+
 
                     // Remove the forum item from both the original and cloned forum lists
                     forumLists[0].removeChild(forumDiv);
@@ -571,7 +592,7 @@ window.onload = function () {
             forumLists[1].appendChild(clonedForumDiv);
 
             results.forEach((doc) => {
-                appendToReply(doc.data().reply, forumName, doc.data().currentUser);
+                appendToReply(doc.data().reply, forumName, doc.data().currentUser, comI);
 
 
             });
@@ -618,95 +639,78 @@ window.onload = function () {
     /**
      * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
      */
-    async function appendToForum(forumData, i) { // Change 'doc' to 'forumData'
-        const forumLists = document.querySelectorAll('.forum-list'); // Get all forum containers
+    async function appendToForum(forumData, i, comI) {
+        const forumLists = document.querySelectorAll('.forum-list');
 
-        console.log(forumData);
-
-        // Create container for forum post
         const forumDiv = document.createElement('li');
         forumDiv.classList.add('forum-item');
 
-        // Forum text container 
         const forumContainer = document.createElement('div');
         forumContainer.classList.add('forum-container');
 
-        // inner forum text container 
         const innerForum = document.createElement('div');
         innerForum.classList.add('inner');
 
-        // reply text container 
         const replyContainer = document.createElement('div');
         replyContainer.classList.add('reply-container');
-        replyContainer.style.display = 'none'; // Initially hidden
+        replyContainer.style.display = 'none';
 
-        // reply btn
         const replyBtn = document.createElement('button');
         replyBtn.textContent = 'Reply';
         replyBtn.classList.add('reply-btn');
 
-        // Add delete section
         const delBtn = document.createElement('button');
         delBtn.textContent = 'Delete';
         delBtn.classList.add('delete-btn');
 
-        // Forum text
         const forumName = document.createElement('p');
-        forumName.textContent = forumData.forum; // Use forumData.forum to display the actual forum text // Assuming forumData has a 'name' property
+        forumName.textContent = forumData.forum;
         forumName.classList.add('forum-post');
 
-        // Display the user who created the forum post
+        // Display comment count
+        const comments = document.createElement('p');
+        comments.textContent = `${comI} comment${comI === 1 ? '' : 's'}`;
+        comments.classList.add('comment-count');
+
         const currentUser = document.createElement('p');
-        currentUser.textContent = ` ${String(i).padStart(2, '0')} // ${userSignedIn}`;
+        currentUser.textContent = `${String(i).padStart(2, '0')} // ${forumData.currentUser}`;
         currentUser.classList.add('forum-creator');
 
-        // Reply input field
         const replyInputs = document.createElement('input');
         replyInputs.type = 'text';
         replyInputs.classList.add('reply-input');
 
-        // Reply submit button
         const replySubmit = document.createElement('button');
         replySubmit.classList.add('reply-submit');
         replySubmit.textContent = 'Submit';
 
-        // Append elements
         replyContainer.appendChild(replyInputs);
         replyContainer.appendChild(replySubmit);
         innerForum.appendChild(currentUser);
         innerForum.appendChild(forumName);
         forumContainer.appendChild(innerForum);
+        forumContainer.appendChild(comments);
         forumContainer.appendChild(replyBtn);
-        forumContainer.appendChild(delBtn); // Ensure the delete button is added here
+        forumContainer.appendChild(delBtn);
         forumDiv.appendChild(forumContainer);
         forumDiv.appendChild(replyContainer);
 
-        // Add event listener for reply button (reply not working)
         replyBtn.addEventListener('click', function () {
             replyContainer.classList.toggle('toggle-reply');
         });
 
-        // Add event listener for delete button
-        //The updating cloned part was done with ChatGPT
         delBtn.addEventListener('click', async function () {
             try {
-                // Get the forum ID from the current document (forumDoc)
-                const forumId = forumData.id; // Now using forumDoc.id
-
-                // Get a reference to the document
+                const forumId = forumData.id;
                 const docRef = doc(db, "Forums", forumId);
 
-                // Delete the document from Firestore
                 await deleteDoc(docRef);
 
-                // Remove the forum item from both the original and cloned forum lists
                 forumLists[0].removeChild(forumDiv);
 
-                // Find the cloned forum by its ID
                 const clonedForumDivId = forumDiv.getAttribute("cloneRef");
                 const clonedForumDiv = document.getElementById(clonedForumDivId);
 
-                // Remove the cloned forum as well
                 if (clonedForumDiv) {
                     forumLists[1].removeChild(clonedForumDiv);
                 }
@@ -718,34 +722,10 @@ window.onload = function () {
             }
         });
 
-
-        replySubmit.addEventListener('click', function () {
-            updateReply(replyInputs);
-        });
-
         forumLists[0].appendChild(forumDiv);
 
-        const clonedForumDiv = forumDiv.cloneNode(true);
-
-        clonedForumDiv.id = `cloned-forun-div-${forumData.currentUser}-${i}`;
-        forumDiv.setAttribute("cloneRef", clonedForumDiv.id);
-
-        forumDiv.id = `orig-forun-div-${forumData.currentUser}-${i}`;
-        clonedForumDiv.setAttribute("origRef", forumDiv.id);
-
-        // Add event listener to the cloned reply button
-        clonedForumDiv.querySelector('.reply-btn').addEventListener('click', function () {
-            clonedForumDiv.querySelector('.reply-container').classList.toggle('toggle-reply');
-        });
-
-        clonedForumDiv.querySelector('.reply-submit').addEventListener('click', function () {
-            updateReply(clonedForumDiv.querySelector('.reply-input'));
-        });
-
-        forumLists[1].appendChild(clonedForumDiv);
-
-        decryptText();
     }
+
 
 
 
