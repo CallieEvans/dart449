@@ -24,6 +24,9 @@ body{
     overflow: hidden !important;
     max-height: 100vh;
 }
+button{
+  cursor: pointer;
+}
 a{
   color: black;
 }
@@ -85,7 +88,7 @@ header ul li{
 }
  
 header ul li a{
-  padding: .3em 2em;
+  padding: .5em 2em;
   text-decoration: none;
 }
 header ul li a:hover{
@@ -310,7 +313,11 @@ img{
   width: 55px;
   height: 40px;
 } */
-
+.users{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 /* Sign in styles */
 li.user-item{
   display: flex;
@@ -330,6 +337,22 @@ li.user-item p{
   max-height: 150px;
   overflow-y:scroll;
   border: 2px solid black;
+}
+.loginbtn-con{
+  display: flex;
+  justify-content: center;
+  
+}
+.loginbtn-con img{
+  max-width: 30px;
+}
+.loginbtn-con button{
+  padding: 0 2px;
+  max-width: 50px;
+  margin: 2em 4em;
+}
+.loginbtn-con button:hover{
+  background-color: #D8D8D8;
 }
 
 .user-list::-webkit-scrollbar {
@@ -375,7 +398,7 @@ display: block;
   width: 100% !important;
 }
 .user-highlight{
-  color:Red !important;
+  color:#0400F1 !important;
 }
 .reply-item{
   order:1;
@@ -403,7 +426,7 @@ display: block;
   border:1.5px solid #0400F1;
   padding: 0 5px 0 5px;
 }
-.reply-input:focus, .topic:focus, .topic-tor:focus{
+.reply-input:focus, .topic:focus, .topic-tor:focus, input:focus{
   outline: 0;
 }
 .tor-pop-up .reply-input, .topic-tor{
@@ -610,7 +633,7 @@ top: 32px;
 .browser-nav{
   color:black;
   width: 100%;
-  margin: 0 1em;
+  margin: 0 1em .2em 1em;
 }
 .browser-nav h4{
   text-align: center;
@@ -704,8 +727,8 @@ top: 32px;
 .login-pop-up .modal{
   background-color:blue;
   margin:0 auto;
-  max-width: 600px;
-  padding: 4em;
+  max-width: 750px;
+  padding: 2em;
     background-color: rgba(239, 239, 239, .8);
   color: black;
   border-style: outset;
@@ -716,7 +739,59 @@ top: 32px;
   outline: 2px solid black;
 }
 
-
+.onion-con{
+  text-align: center;
+  margin-bottom: 1em;
+}
+.onion-con h3{
+    font-size: 16px;
+}
+#user-input{
+  border-radius: 0 !important;
+  border: 1.5px solid black;
+}
+button.login-popup{
+  border: 0px solid black;
+  outline: 0;
+  background-color: transparent;
+  padding: 0;
+}
+button.login-popup:hover{
+  background-color: transparent;
+  color: #0400F1;
+}
+.button-create{
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-top: 1em;
+}
+.login-pop-up .modal{
+  background-color: #EBEBF2;
+  z-index: 100;
+}
+.input-container{
+  margin: 3em 0 6em 0;
+}
+.login-modal-background{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(248, 248, 248, 0.85);
+  position: absolute;
+  top:0;
+  left: 0;
+   z-index: 1;
+}
+label{
+  font-size: 16px;
+}
+.btn-flexes{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
 .create-acc{
   display: none;
 }
@@ -1285,6 +1360,18 @@ margin: 0;
 
 
 @media only screen and (min-width: 800px) {
+  .login-pop-up .modal{
+    padding: 4em;
+min-width: 600px;
+  }
+  .user-list{
+  width: 250px;
+  margin:0 auto;
+}
+.loginbtn-con{
+  min-width: 250px;
+
+}
 
   
 }

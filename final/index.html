@@ -134,22 +134,34 @@
                 
             </section>
             <div class="login-pop-up"> 
+                <div class="login-modal-background"></div>
                 <div class="modal">
-                    <div class="users">        
+                    <div class="users"> 
+                        <div class="onion-con"><img src="img/onion.png" width="50" style="display: inline; "> 
                         <h3>Welcome to Tor-ent</h3>
+                    </div> 
                         <div><ul class="user-list scroll-bar"></ul></div>
-                         <button class="shutdown" onclick="window.close();">shutdown</button>
-                        <button class="login">Login</button>
-                        <button class="account-popup">Create Account</button>
-
+                         <!-- <button class="shutdown" onclick="window.close();">shutdown</button> -->
+                          <div class="loginbtn-con">
+                        <div class="btn-flexes"><button class="login"><img class="login-img" src="img/login.png"> </button>Login</div>
+                        <div  class="btn-flexes"><button class="account-popup"><img class="account-img" src="img/create.png"></button>Create Account</div>
+                    </div>
                     </div>   
                     <div class="create-acc">        
-                        <h3>Please create an account to continue</h3>
-                        <input type="text" id="user-input" name="username" placeholder="username">
+                        <div class="users"> 
+                        <div class="onion-con"><img src="img/onion.png" width="50" style="display: inline; "> 
+                        <h3>Please create an account <br> to continue</h3>
+                    </div> 
+                    <div class="input-container">
+                        <label for="username">Username </label>
+                        <input type="text" id="user-input" name="username" placeholder=" ">
                         <!-- <input type="text" id="user-pass" name="password" placeholder="password"> -->
+                         <div class="button-create">
                         <button class="submit">Create</button>
                         <button class="login-popup">Login</button>
                         <p class="login-conf">You've created an account, please go login!</p>
+                    </div>
+                    </div>
                     </div>   
                     
                 </div> 
@@ -175,6 +187,8 @@
         <p>© Copyright - tor-ent</p>
     </footer>
     <script type="module" src="js/database.js"></script>
+    
+    
       <script src="js/folder.js"></script>
     <script src="js/java.js"></script>
     <script src="js/video.js"></script>
