@@ -100,7 +100,7 @@ window.onload = function () {
         let confirm = document.querySelector('.login-conf');
         let user = currentUser.value;
 
-        const images = ['img/users-random/user-1.svg', 'img/users-random/user-2.svg', 'img/users-random/user-3.svg'];
+        const images = ['img/users-random/user-1.png', 'img/users-random/user-2.png', 'img/users-random/user-3.png'];
         let randomImgNum = Math.floor(Math.random() * images.length);
         let icon = images[randomImgNum];
 
