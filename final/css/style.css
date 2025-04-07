@@ -89,7 +89,7 @@ header ul li{
 }
  
 header ul li a{
-  padding: .5em 2em;
+  padding: .5em .5em;
   text-decoration: none;
 }
 header ul li a:hover{
@@ -1416,7 +1416,9 @@ margin: 0;
   width:50%;
     left:0vw;
 }
-
+header ul li a{
+  padding: .5em 2em;
+}
 
 .safari-b-pop-up{
   width:49.5%;
