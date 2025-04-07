@@ -89,8 +89,7 @@ window.onload = function () {
             console.error("Error adding document: ", e);
         }
     }
-    //const user = userSignedIn;  // Replace this with the actual user or get it dynamically
-    //fetchUserData();
+
 
 
     /**
@@ -112,8 +111,8 @@ window.onload = function () {
         }
 
         // Add user icon to Firebase
-        await addUser(user, icon);  // Save to Firebase
-        fetchUserData(user);  // Fetch the updated icon and display it
+        await addUser(user, icon);
+        fetchUserData(user);
     }
 
 
@@ -138,7 +137,7 @@ window.onload = function () {
     }
 
     /**
- * take photo of user and upload the the database
+ * take photo of user and upload the the database -help from chatgpt not all though
  */
     function takePhoto(user, icon) {
         const context = canvas.getContext('2d');
@@ -158,18 +157,18 @@ window.onload = function () {
             });
 
         });
-        //photo.style.display = 'block';
+
     }
 
     /**
-   * Update the user name & password
+   * Update the user name
    */
 
     async function triggerUser() {
-        const usersRef = collection(db, "Users"); // Reference to the "Users" collection
-        const userLoginList = await getDocs(usersRef); // Fetch all documents
+        const usersRef = collection(db, "Users");
+        const userLoginList = await getDocs(usersRef);
 
-        const userList = document.querySelector('.user-list'); // Get the container
+        const userList = document.querySelector('.user-list');
         userList.innerHTML = ''; // Clear previous users
 
         // Loop through each user in the database
@@ -179,18 +178,18 @@ window.onload = function () {
 
             // Create the HTML elements dynamically
             const userDiv = document.createElement('li');
-            userDiv.classList.add('user-item'); // Add a class for styling
+            userDiv.classList.add('user-item');
 
             // Create user icon (initially set to placeholder)
             const userIcon = document.createElement('img');
-            userIcon.src = userData.icon; // Use a default icon if none is found
+            userIcon.src = userData.icon;
             userIcon.classList.add('user-icon');
             // Add dynamic class for user
 
             // Create user name (p element)
             const userName = document.createElement('p');
             userName.textContent = userData.user;
-            userName.classList.add(userData.user.trim().replace(/\s+/g, '-')); // Add dynamic class for user
+            userName.classList.add(userData.user.trim().replace(/\s+/g, '-'));
             // Append user name and password input to the user container
             userDiv.appendChild(userIcon);
             userDiv.appendChild(userName);
@@ -221,44 +220,33 @@ window.onload = function () {
 
 
     async function appendToUser(doc, icon) {
-        // const userData = doc;
-        // const loginPopup = document.querySelector('.login-pop-up');
-        const userList = document.querySelector('.user-list'); // Get the container
+        const userList = document.querySelector('.user-list');
 
         // Create the HTML elements dynamically
         const userDiv = document.createElement('li');
-        userDiv.classList.add('user-item'); // Add a class for styling
+        userDiv.classList.add('user-item');
 
         const userIcon = document.createElement('img');
         userIcon.src = icon;
-        userIcon.classList.add('user-icon'); // Add dynamic class for user
+        userIcon.classList.add('user-icon');
 
-        // Create user name (p element)
+        // Create user name
         const userName = document.createElement('p');
         userName.textContent = doc;
-        //ai for the replace function
-        userName.classList.add(doc.trim().replace(/\s+/g, '-')); // Add dynamic class for user
 
-        // Create password input (initially hidden)
-        // const passInput = document.createElement('input');
-        // passInput.type = 'text';
-        // passInput.classList.add(doc.trim().replace(/\s+/g, '-'), 'user-sign-in');
-        // passInput.placeholder = 'Enter password';
-        // passInput.style.display = 'none'; // Hide by default
+        userName.classList.add(doc.trim().replace(/\s+/g, '-'));
 
-        // Append user name and password input to the user container
+
         userDiv.appendChild(userIcon);
         userDiv.appendChild(userName);
-        // userDiv.appendChild(passInput);
         userList.appendChild(userDiv);
 
 
-        // = userDiv.querySelector('.user-sign-in');
 
         bindUserClick(userName, doc);
     }
 
-    triggerUser(); // Call the function to initialize the functionality
+    triggerUser();
 
 
     /**
@@ -282,6 +270,7 @@ window.onload = function () {
                 userSignedIn = username;
                 console.log(`Welcome ${userSignedIn}`);
             }
+            //Get desktop icon vars and then controll when the animation happens
             const browserTorTog = document.querySelector('.tor');
             const browserSafariTog = document.querySelector('.safari');
             const browserFolderTog = document.querySelector('.folder');
@@ -304,7 +293,7 @@ window.onload = function () {
     }
 
 
-    // Fetch user data (including the icon) before the user logs in
+    // Fetch user data (including the icon) before the user logs in - created with chatgpt
     async function fetchUserData(user) {
         const usersRef = collection(db, "Users");
         const docRef = doc(usersRef, user);
@@ -316,8 +305,7 @@ window.onload = function () {
                 const userData = docSnap.data();
                 const userIcon = userData.icon;
                 console.log('User Icon:', userIcon);
-                // Update the user icon on the page
-                // updateUserIcon(userIcon);
+
             } else {
                 console.log("No such user!");
             }
@@ -326,13 +314,7 @@ window.onload = function () {
         }
     }
 
-    // Update the user icon in the frontend
-    // function updateUserIcon(icon) {
-    //     const userIconElement = document.querySelector('.user-icon'); // Make sure the selector matches your actual HTML
-    //     if (userIconElement) {
-    //         userIconElement.src = icon;
-    //     }
-    // }
+
 
 
     async function retrieveImage(userSignedIn) {
@@ -385,26 +367,25 @@ window.onload = function () {
         }
         try {
             const forumsRef = collection(db, 'Forums');
-            const docRef = doc(forumsRef); // Generate a document reference without passing the forum as the ID
+            const docRef = doc(forumsRef);
 
             // Add forum with user reference
             await setDoc(docRef, {
                 forum: forum,
-                currentUser: userSignedIn // Associate with signed-in user
+                currentUser: userSignedIn
             });
             triggerForum(userSignedIn);
 
             console.log("Forum written with ID: ", docRef.id);
 
 
-            // Now pass the forum data object, including the document ID
             const forumData = {
                 id: docRef.id,
                 forum: forum,
                 currentUser: userSignedIn
             };
 
-            // Pass the forumData object to appendToForum
+            // Pass the forumData var to appendToForum
             appendToForum(forumData, i, 0);
 
         } catch (e) {
@@ -414,16 +395,15 @@ window.onload = function () {
 
 
     /**
-   * Update the forum name & password
-   */
+* Update the forum for the safari browser
+*/
     function updateforum(i) {
         let forum = currentforum.value;
-        i = document.querySelectorAll('.safari-b-pop-up .forum-item').length + 1; // Calculate new index
-        //forumNameDisplay.textContent = forum;
+        i = document.querySelectorAll('.safari-b-pop-up .forum-item').length + 1;
 
         //Calling from database.js
         addforum(forum, i);
-        // getforum(forum);
+
 
 
     }
@@ -431,16 +411,15 @@ window.onload = function () {
     btnForum.addEventListener('click', updateforum);
 
     /**
-* Update the forum name & password
+* Update the forum for the tor browser
 */
     function updateforumTor(i) {
         let forum = currentforumTor.value;
-        i = document.querySelectorAll('.tor-pop-up .forum-item').length + 1; // Calculate new index
-        //forumNameDisplay.textContent = forum;
+        i = document.querySelectorAll('.tor-pop-up .forum-item').length + 1;
 
         //Calling from database.js
         addforum(forum, i);
-        // getforum(forum);
+
 
 
     }
@@ -450,14 +429,14 @@ window.onload = function () {
 
 
     /**
-    * Update the forum entry
+    * Update the forum entry and display it
     */
 
     async function triggerForum(user) {
-        const forumsRef = collection(db, "Forums"); // Reference to the "forums" collection
-        const forumLoginList = await getDocs(forumsRef); // Fetch all documents
+        const forumsRef = collection(db, "Forums");
+        const forumLoginList = await getDocs(forumsRef);
 
-        const forumLists = document.querySelectorAll('.forum-list'); // Get all forum containers
+        const forumLists = document.querySelectorAll('.forum-list');
 
         forumLists.forEach(forumList => {
             forumList.innerHTML = ''; // Clear previous forums
@@ -465,7 +444,7 @@ window.onload = function () {
 
         let i = 0;
 
-        for (const forumDoc of forumLoginList.docs) { // Renamed 'doc' to 'forumDoc'
+        for (const forumDoc of forumLoginList.docs) {
             i++;
             const forumData = forumDoc.data();
             const repliesRef = collection(db, "Replies");
@@ -490,21 +469,21 @@ window.onload = function () {
             // reply text container 
             const replyContainer = document.createElement('div');
             replyContainer.classList.add('reply-container');
-            replyContainer.style.display = 'none'; // Initially hidden
+            replyContainer.style.display = 'none';
 
 
             // reply btn
-            const replyBtn = document.createElement('button'); // Changed from 'btn' to 'button'
+            const replyBtn = document.createElement('button');
             replyBtn.textContent = 'Reply';
             replyBtn.classList.add('reply-btn');
 
             //Add delete section
-            const delBtn = document.createElement('button'); // Changed from 'btn' to 'button'
+            const delBtn = document.createElement('button');
             delBtn.textContent = 'Delete';
             delBtn.classList.add('delete-btn');
 
             //Add comments section
-            let comI = results.size; // Count the number of replies
+            let comI = results.size;
             const comments = document.createElement('p');
             //Got help from chatGPT
             comments.textContent = `${comI} comment${comI === 1 ? '' : 's'}`;
@@ -552,8 +531,7 @@ window.onload = function () {
 
             // Update welcome message
             const welcomeUser = document.querySelectorAll('.welcome-user');
-            //userSignedIn = forumDoc.data().currentUser;
-            //console.log(userSignedIn);
+
             welcomeUser.forEach(element => {
                 element.textContent = `Welcome ${user}`;
 
@@ -579,7 +557,7 @@ window.onload = function () {
 
                     // Remove the forum item from both the original and cloned forum lists
                     forumLists[0].removeChild(forumDiv);
-                    forumLists[1].removeChild(clonedForumDiv); // Remove the cloned forum from the second list
+                    forumLists[1].removeChild(clonedForumDiv);
 
                     console.log(`Forum post with ID ${forumId} has been deleted.`);
                     triggerForum(user)
@@ -628,7 +606,7 @@ window.onload = function () {
 
     triggerForum();
     /**
-     * Decrypting ther text
+     * Decrypting the text created by chatgpt
      */
     function decryptText() {
         let forumText = document.querySelectorAll('.safari-b-pop-up .forum-post, .safari-b-pop-up .reply-post');
@@ -652,14 +630,13 @@ window.onload = function () {
             // Loop through each character of the text and replace it with the corresponding symbol
             for (let i = 0; i < text.length; i++) {
                 const char = text[i];
-                const symbol = letterToSymbolMap[char] || char; // If there's no mapped symbol, keep the original character (e.g., punctuation)
+                const symbol = letterToSymbolMap[char] || char;
                 replacedText += symbol;
             }
 
             return replacedText;
         }
 
-        // Example usage
         forumText.forEach(element => {
             const inputText = element.textContent;
             const outputText = replaceWithMappedSymbols(inputText);
@@ -669,7 +646,7 @@ window.onload = function () {
 
 
     /**
-     * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
+     * Append to forum
      */
     async function appendToForum(forumData, i, comI) {
         const forumLists = document.querySelectorAll('.forum-list');
@@ -766,33 +743,32 @@ window.onload = function () {
 
 
 
-    //const forumPost = document.querySelector('.forumPost');
 
     /**
-    * Replies lmao
+    * Add replies
     */
     async function addreply(reply, forumPostContainer) {
         try {
             const repliesRef = collection(db, 'Replies');
             const docRef = doc(repliesRef, reply);
 
-            // Add forum with user reference
+
             await setDoc(docRef, {
                 reply: reply,
                 forumPost: forumPostContainer.textContent,
-                currentUser: userSignedIn // Associate with signed-in user
+                currentUser: userSignedIn
             });
 
             console.log("reply written with ID: ", docRef.id);
             appendToReply(reply, forumPostContainer, userSignedIn);
-            // getforum(forum);
+
         } catch (e) {
             console.error("Error adding reply: ", e);
         }
     }
 
     /**
-    * Update the forum name & password
+    * Update the reply
     */
     function updateReply(replyInputs) {
         // e.preventDefault();
@@ -800,23 +776,22 @@ window.onload = function () {
         const currentreply = replyInputs
         let reply = currentreply.value;
         let forumPostContainer = currentreply.parentElement.parentElement.querySelector('.forum-post');
-        //forumNameDisplay.textContent = forum;
+
 
         //Calling from database.js
         addreply(reply, forumPostContainer);
-        // getforum(forum);
+
 
 
     }
-    // const replySubmit = document.querySelector('.reply-submit');
+
 
 
 
     /**
-     * aPEENDING FORUM, RREPLYINGS WILL BE DONE WITH THIS ASWELL.
+     * Appending to reply
      */
     async function appendToReply(doc, forumContainer, userReplied) {
-        //const ReplyLists = document.querySelectorAll('.forum-list'); // Get all forum containers
         let forumItem = forumContainer.parentElement.parentElement.parentElement;
         let replyContainer = forumItem.querySelector('.reply-container');
 
@@ -862,11 +837,6 @@ window.onload = function () {
 
         decryptText();
 
-        // Append to ALL forum lists
-        // ReplyLists.forEach(replyList => {
-        // ReplyLists[1].appendChild(replyDiv.cloneNode(true));
-        // ReplyLists[0].appendChild(replyDiv);// Clone node to avoid moving it
-        // });
     }
 
 }

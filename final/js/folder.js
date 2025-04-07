@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Grab buttons
+    /**
+     * This section was created with the help of Chatgpt
+     */
+    // Button Variables
     const desktopBtn = document.querySelector('.desktop2');
     const documentsBtn = document.querySelector('.documents');
     const photosBtn = document.querySelector('.photos');
     const downloadBtn = document.querySelector('.download');
     const programBtn = document.querySelector('.programmer');
 
-    // Grab popups
+    // Pop up variables
     const deskPop = document.querySelector('.desk-pop');
     const docPop = document.querySelector('.doc-pop');
     const docPopFirst = document.querySelector('.doc-pop-first');
@@ -26,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Set default on load
     showOnly(docPopFirst);
 
-    // Event listeners for each button
+    // Event listeners for each button - I obviously didn't do this
     desktopBtn?.addEventListener('click', () => showOnly(deskPop));
     documentsBtn?.addEventListener('click', () => showOnly(docPop));
     photosBtn?.addEventListener('click', () => showOnly(photosPop));
