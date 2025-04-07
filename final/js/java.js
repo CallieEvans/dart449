@@ -155,9 +155,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    const cityDisplay = document.querySelector('.city');
-    const provDisplay = document.querySelector('.province');
-    const ipDisplay = document.querySelector('.ip-address');
+    const cityDisplay = document.querySelectorAll('.city');
+    const provDisplay = document.querySelectorAll('.province');
+    const ipDisplay = document.querySelectorAll('.ip-address');
 
     /**
         * Get IP address / location done with ChatGPT
@@ -167,7 +167,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             const ip = data.ip;
             //console.log('Public IP address:', ip);
-            ipDisplay.textContent = `${ip}`;
+            ipDisplay.forEach(element => {
+                element.textContent = `${ip}`;
+            });
+
 
             // Now fetch the geolocation info based on the IP
             return fetch(`https://ipinfo.io/${ip}/json`);
@@ -181,8 +184,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const region = locationData.region; // This will typically be the province or state
             const country = locationData.country;
 
-            cityDisplay.textContent = `${city} //`;
-            provDisplay.textContent = `${region} //`;
+            cityDisplay.forEach(element => {
+                element.textContent = `${city} `;
+            });
+
+            provDisplay.forEach(element => {
+                element.textContent = `${region}`;
+            });
+
 
             // console.log(`City: ${city}, Province/State: ${region}, Country: ${country}`);
         })
@@ -202,7 +211,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function openFolder() {
         browserFolder.style.display = 'flex';
     }
+    const fileLink = document.querySelector('.file-link');
     browserFolderTog.addEventListener('click', openFolder);
+    fileLink.addEventListener('click', openFolder);
     browserFolderTog.addEventListener('mouseout', folderUnhover);
 
     function folderHover() {
@@ -221,6 +232,21 @@ document.addEventListener('DOMContentLoaded', function () {
     browserFolderClose.addEventListener('click', closeFolder);
 
 
+    const editLink = document.querySelector('.tooltip1');
+    const editPop = document.querySelector('.tooltop1-pop');
+    const helpLink = document.querySelector('.tooltip2');
+    const helpPop = document.querySelector('.tooltop2-pop');
+
+    function toggleEdit() {
+        editPop.classList.toggle('tool-show');
+    }
+    editLink.addEventListener('click', toggleEdit);
+
+
+    function toggleHelp() {
+        helpPop.classList.toggle('tool-show');
+    }
+    helpLink.addEventListener('click', toggleHelp);
 
     //tor
     function openTor() {
@@ -284,31 +310,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Show scroll bar always
 
-    let sc;
 
-    // Constantly update the scroll position
-    sc = setInterval(scrollDown, 200);
-
-    // Optional: Stop the updating if the user clicks
-    document.querySelector('.scroll-bar').addEventListener('mousedown', function () {
-        clearInterval(sc);
-    });
-
-    function scrollDown() {
-        // Find every div with the class "mydiv" and apply the fix
-        let mydivs = document.querySelectorAll('.scroll-bar');
-        mydivs.forEach(function (g) {
-            try {
-                g.scrollTop += 1;
-                g.scrollTop -= 1;
-            } catch (e) {
-                // Eliminates errors when no scroll is needed
-            }
-        });
-    }
 
     //window loaded
 });
 
 
 
+
+let sc;
+
+// Constantly update the scroll position
+sc = setInterval(scrollDown, 200);
+
+// Optional: Stop the updating if the user clicks
+document.querySelector('.scroll-bar').addEventListener('mousedown', function () {
+    clearInterval(sc);
+});
+
+function scrollDown() {
+    // Find every div with the class "mydiv" and apply the fix
+    let mydivs = document.querySelectorAll('.scroll-bar');
+    mydivs.forEach(function (g) {
+        try {
+            g.scrollTop += 1;
+            g.scrollTop -= 1;
+        } catch (e) {
+            // Eliminates errors when no scroll is needed
+        }
+    });
+}
+
+// const browserTorTog = document.querySelector('.tor');
+// const browserSafariTog = document.querySelector('.safari');
+// const browserFolderTog = document.querySelector('.folder');
+// let login = document.querySelector('.login');
+// function bringInIcons() {
+//     browserTorTog.style.top = '25vh';
+//     browserTorTog.style.left = '70vw';
+//     browserTorTog.style.opacity = '1';
+
+//     browserSafariTog.style.top = '50%';
+//     browserSafariTog.style.left = '35vw';
+//     browserSafariTog.style.opacity = '1';
+
+//     browserFolderTog.style.top = '20%';
+//     browserFolderTog.style.left = '10vw';
+//     browserFolderTog.style.opacity = '1';
+// }
+// login.addEventListener('click', bringInIcons);

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const documentsBtn = document.querySelector('.documents');
     const photosBtn = document.querySelector('.photos');
     const downloadBtn = document.querySelector('.download');
+    const programBtn = document.querySelector('.programmer');
 
     // Grab popups
     const deskPop = document.querySelector('.desk-pop');
@@ -11,9 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const docPopFirst = document.querySelector('.doc-pop-first');
     const photosPop = document.querySelector('.photo-pop');
     const downloadPop = document.querySelector('.download-pop');
+    const proPop = document.querySelector('.program-pop');
 
     // Put all popups in an array for easy clearing
-    const allPopups = [deskPop, docPop, docPopFirst, photosPop, downloadPop];
+    const allPopups = [deskPop, docPop, docPopFirst, photosPop, downloadPop, proPop];
 
     // Helper function to hide all and show one
     function showOnly(targetPopup) {
@@ -29,4 +31,5 @@ document.addEventListener('DOMContentLoaded', function () {
     documentsBtn?.addEventListener('click', () => showOnly(docPop));
     photosBtn?.addEventListener('click', () => showOnly(photosPop));
     downloadBtn?.addEventListener('click', () => showOnly(downloadPop));
+    programBtn?.addEventListener('click', () => showOnly(proPop));
 });

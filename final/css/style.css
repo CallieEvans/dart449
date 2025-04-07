@@ -77,6 +77,7 @@ header{
     font-family: 'chicago';
     border-bottom: 2px solid black;
 }
+
 .logo{
   margin-right: 2em;
 }
@@ -154,7 +155,7 @@ main{
 .doc-pop,
 .doc-pop-first,
 .photo-pop,
-.download-pop{
+.download-pop, .program-pop{
   display: none;
 }
  .active-fold{
@@ -276,6 +277,47 @@ button.reply-submit{
 }
 .open-lines{
   color:black;
+  max-width: 25px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+.open-lines img{
+  position: absolute;
+  top: 10px;
+  left: -2px;
+  width: 25px;
+  margin: 0;
+  max-width: 25px;
+}
+header li{
+  position: relative;
+}
+
+.tooltop1-pop, .tooltop2-pop{
+  display: none;
+  position: absolute;
+  top:22px;
+  left: 0;
+  background-color: black;
+  width: 150px;
+  color: white;
+  
+  border-style: inset;
+  border-bottom-style: inset;
+  border-color: #fff;
+  border-bottom-color: rgb(255, 255, 255);
+  border-bottom: 2px solid black;
+  border-bottom-width: 2px;
+  border-width: 2px;
+  outline: 1px solid black;
+  margin: 2px;
+  font-family: 'chicago';
+  font-size: 10px;
+  padding: 10px 15px;
+}
+.tool-show{
+  display: block;
 }
 .b-nav-con{
   display: flex;
@@ -313,6 +355,11 @@ img{
   width: 55px;
   height: 40px;
 } */
+ 
+.user-item img{
+  max-width: 45px;
+}
+
 .users{
   display: flex;
   flex-direction: column;
@@ -403,23 +450,40 @@ display: block;
 .reply-item{
   order:1;
 }
-.reply-btn{
+.safari-b-pop-up .reply-btn{
   margin-left: auto;
+}
+.safari-b-pop-up .symbol-slash{
+  margin-left:auto;
 }
 .delete-btn:before{
   content: "//";
   margin: 0 6px;
 }
-
-.reply-input {
-  order: 2;
+.safari-modal button, .tor-modal button{
+  outline-color:  #0400F1;
 }
-.reply-submit {
-  order: 3;
+
+.safari-b-pop-up .reply-btn:hover, .delete-btn:hover{
+  color:#0400F1;
+} 
+.tor-pop-up .reply-btn{
+  color:white
+}
+.tor-pop-up .reply-btn:hover{
+  color: gray;
 }
 .reply-container{
   font-size: 10px;
 }
+.reply-input {
+  order: 2;
+  font-size: 8px;
+}
+.reply-submit {
+  order: 3;
+}
+
 .reply-input, .topic, .topic-tor{
   width: 100%;
   min-height: 50px;
@@ -433,9 +497,10 @@ display: block;
   background-color: #0F0094;
   color: white;
 }
-.reply-input::placeholder{
-  font-size: 8px;
+.reply-input::placeholder, .reply-inpu{
+  font-size: 8px !important;
 }
+
 .safari-b-pop-up .reply-input, .safari-b-pop-up .topic{
     font-size: 8px;
       color:#0400F1;
@@ -451,7 +516,7 @@ display: block;
   display: flex !important;
   flex-direction: column;
 }
-.scroll-bar::-webkit-scrollbar-thumb {
+.scroll-bar::-webkit-scrollbar-thumb, .safari-modal::-webkit-scrollbar-thumb  {
     background-color: gray; /* color of the scrollbar thumb */
     border-radius: 0px; /* rounded corners for the thumb */
            background-color: rgba(239, 239, 239, .8);
@@ -467,7 +532,7 @@ display: block;
 }
 
 
-.scroll-bar::-webkit-scrollbar-track {
+.scroll-bar::-webkit-scrollbar-track, .safari-modal::-webkit-scrollbar-track {
     background: #f1f1f1; /* color of the scrollbar track */
     border-radius: 0px; /* rounded corners for the track */
        background-color: rgba(239, 239, 239, .8);
@@ -481,19 +546,21 @@ display: block;
   outline: 1px solid black;
 }
 
-.scroll-bar::-webkit-scrollbar-thumb:hover {
+.scroll-bar::-webkit-scrollbar-thumb:hover, .safari-modal::-webkit-scrollbar-thumb:hover  {
     background-color: #555; /* color of the thumb when hovered */
     
 }
 
 /* For Firefox */
-.scroll-bar{
+.scroll-bar, .safari-modal{
     scrollbar-width: thick; /* width of the scrollbar */
     scrollbar-color: darkgray #f1f1f1; /* thumb color and track color */
 
 }
 
-
+.sources p{
+  font-size: 10px;
+}
 
 .safari-b-pop-up{
   width:100%;
@@ -531,6 +598,7 @@ top: 32px;
   display: none;
    z-index: 10;
    flex-direction: column;
+   transition: .5s ease;
 }
 .folder-pop-up{
   width:100%;
@@ -541,6 +609,7 @@ top: 32px;
   display: none;
   flex-direction: column;
   z-index: 2;
+  transition: .5s ease;
 }
 .folder-pop-up h3{
   font-size: 20px;
@@ -797,6 +866,9 @@ label{
 }
 .reply-container{
   display: none;
+}
+.safari-b-pop-up .city:after, .safari-b-pop-up .province:after{
+  content: " //";
 }
 
 footer{
@@ -1346,6 +1418,7 @@ margin: 0;
 .safari-b-pop-up{
   width:49.5%;
     left:4px;
+    transition: .5s ease;
   
 }
 .open-browser{
