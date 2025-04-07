@@ -850,7 +850,7 @@ button.login-popup:hover{
   height: 100vh;
   background-color: rgba(248, 248, 248, 0.85);
   position: absolute;
-  top:0;
+  top:-2px;
   left: 0;
    z-index: 1;
 }
