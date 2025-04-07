@@ -479,6 +479,7 @@ display: block;
 .reply-input {
   order: 2;
   font-size: 8px;
+  
 }
 .reply-submit {
   order: 3;
@@ -733,7 +734,9 @@ top: 32px;
   min-height: 91vh;
   color:#EFEFEF;
 } */
-
+input{
+  border-radius: 0 !important;
+}
 .login-pop-up{
   width:100%;
   min-height: 100vh;
@@ -741,7 +744,7 @@ top: 32px;
  background-size: cover;
  background-repeat: no-repeat;
   position: fixed;
-  top:30px;
+  top:27.5px;
   left: 0px;
     display: flex;
   align-items: center;

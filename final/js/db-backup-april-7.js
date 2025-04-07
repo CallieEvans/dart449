@@ -582,14 +582,13 @@ window.onload = function () {
                     forumLists[1].removeChild(clonedForumDiv); // Remove the cloned forum from the second list
 
                     console.log(`Forum post with ID ${forumId} has been deleted.`);
-                    triggerForum(user)
 
                 } catch (error) {
                     console.error("Error deleting forum post: ", error);
                 }
             });
 
-            replySubmit.addEventListener('click', function () { updateReply(replyInputs); triggerForum(user); });
+            replySubmit.addEventListener('click', function () { updateReply(replyInputs) });
 
             forumLists[0].appendChild(forumDiv);
 
@@ -610,7 +609,7 @@ window.onload = function () {
                 clonedForumDiv.querySelector('.reply-container').classList.toggle('toggle-reply');
             });
 
-            clonedForumDiv.querySelector('.reply-submit').addEventListener('click', function () { updateReply(clonedForumDiv.querySelector('.reply-input')); triggerForum(user); });
+            clonedForumDiv.querySelector('.reply-submit').addEventListener('click', function () { updateReply(clonedForumDiv.querySelector('.reply-input')) });
 
             forumLists[1].appendChild(clonedForumDiv);
 
